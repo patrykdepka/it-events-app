@@ -18,8 +18,12 @@ public class SecurityConfig {
         http.authorizeRequests(request -> request
                 .antMatchers("/h2-console/**").permitAll()
                 .mvcMatchers("/").permitAll()
+                .mvcMatchers("/login**").permitAll()
                 .anyRequest().authenticated());
-        http.formLogin(login -> login.loginPage("/login").permitAll());
+        http.formLogin(login -> login
+                .loginPage("/login").permitAll()
+                .failureHandler(new ItEventsAuthenticationFailureHandler())
+        );
         http.logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout/**", HttpMethod.GET.name()))
                 .logoutSuccessUrl("/login?logout").permitAll()
