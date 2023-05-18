@@ -8,4 +8,5 @@
     <include file="changelog/2023-05-18/0002_create_table_app_user_roles.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-18/0003_app_users_data.sql" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-18/0004_app_user_roles_data.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-18/0005_create_table_persistent_logins.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
