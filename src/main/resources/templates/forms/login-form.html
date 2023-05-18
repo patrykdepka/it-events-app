@@ -10,7 +10,7 @@
 <body>
 <nav th:replace="fragments :: navbar"></nav>
 <div class="form-container">
-    <form id="loginForm" name="loginForm" class="custom-form" method="post" th:method="post" action="#" th:action="@{/login}">
+    <form id="loginForm" name="loginForm" class="custom-form" onsubmit="return validateLoginForm();" method="post" th:method="post" action="#" th:action="@{/login}">
         <div class="form-heading">
             <h2>Zaloguj się do IT Events</h2>
             <span>Wprowadź swoje dane poniżej</span>
@@ -20,16 +20,16 @@
             <input type="text"
                    id="username" name="username"
                    class="form-control"
-                   placeholder="E-mail"
-                   required>
+                   placeholder="E-mail">
+            <div id="usernameErrorMessage" class="error-message" style="display: none;" th:text="#{loginForm.field.username.error.notNull.message}">Błędy związane z nazwą użytkownika</div>
         </div>
         <div class="form-group">
             <label for="password" class="form-label">HASŁO</label>
             <input type="password"
                    id="password" name="password"
                    class="form-control"
-                   placeholder="Hasło"
-                   required>
+                   placeholder="Hasło">
+            <div id="passwordErrorMessage" class="error-message" style="display: none;" th:text="#{loginForm.field.password.error.notNull.message}">Błędy związane z hasłem</div>
         </div>
         <div class="d-grid gap-2 col-5 mx-auto" style="margin: 8px 0 8px 0;">
             <button class="btn form-button" type="submit">Zaloguj się</button>
@@ -38,5 +38,6 @@
 </div>
 
 <th:block th:replace="fragments :: scripts"></th:block>
+<script type="text/javascript" src="../../static/scripts/validation.js" th:src="@{/scripts/validation.js}"></script>
 </body>
 </html>

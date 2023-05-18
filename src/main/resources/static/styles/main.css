@@ -36,6 +36,11 @@
     margin-bottom: 0;
 }
 
+.error-message {
+    font-size: 80%;
+    color: #dc3545;
+}
+
 .form-button {
     color: #ffffff;
     background-color: #f39c12;
