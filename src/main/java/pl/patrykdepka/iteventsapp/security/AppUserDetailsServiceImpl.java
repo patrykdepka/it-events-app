@@ -28,11 +28,13 @@ public class AppUserDetailsServiceImpl implements AppUserDetailsService {
     }
 
     private UserDetails createAppUserDetails(AppUser user) {
-        return User.builder()
+        return new AppUserDetails.AppUserDetailsBuilder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .disabled(!user.isEnabled())
-                .accountLocked(!user.isAccountNonLocked())
+                .enabled(user.isEnabled())
+                .accountNonLocked(user.isAccountNonLocked())
                 .authorities(user.getRoles()
                         .stream()
                         .map(role -> (GrantedAuthority) role::name)
