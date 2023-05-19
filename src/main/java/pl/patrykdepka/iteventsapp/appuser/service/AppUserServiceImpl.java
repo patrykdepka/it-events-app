@@ -31,6 +31,7 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser user = new AppUser();
         user.setFirstName(newUserData.getFirstName());
         user.setLastName(newUserData.getLastName());
+        user.setDateOfBirth(LocalDate.parse(newUserData.getDateOfBirth(), DateTimeFormatter.ISO_LOCAL_DATE));
         user.setEmail(newUserData.getEmail().toLowerCase());
         user.setPassword(passwordEncoder.encode(newUserData.getPassword()));
         user.setEnabled(true);
