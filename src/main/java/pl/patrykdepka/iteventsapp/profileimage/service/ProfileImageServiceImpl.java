@@ -2,6 +2,7 @@ package pl.patrykdepka.iteventsapp.profileimage.service;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import pl.patrykdepka.iteventsapp.profileimage.exception.DefaultProfileImageNotFoundException;
 import pl.patrykdepka.iteventsapp.profileimage.model.ProfileImage;
 import pl.patrykdepka.iteventsapp.profileimage.repository.ProfileImageRepository;
 
@@ -25,7 +26,7 @@ public class ProfileImageServiceImpl implements ProfileImageService {
             profileImage.setFileData(defaultProfileImage.readAllBytes());
             return profileImageRepository.save(profileImage);
         } catch (IOException e) {
-            throw new RuntimeException("File " + resource.getPath() + " not found");
+            throw new DefaultProfileImageNotFoundException("File " + resource.getPath() + " not found");
         }
     }
 }
