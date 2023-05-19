@@ -8,7 +8,7 @@
     <link href="../static/styles/main.css" th:href="@{/styles/main.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
-<body>
+<body onload="setCurrentSortOption();">
 <nav th:replace="fragments :: navbar"></nav>
 <div class="container">
     <div class="table-heading">
@@ -19,7 +19,17 @@
         <div class="col-md-4" style="text-align: center;">
             <span th:text="'Liczba użytkowników: ' + ${users.getTotalElements()}">Liczba użytkowników: 0</span>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-4" style="text-align: right; padding: 5px 0;">
+            <div class="dropdown show">
+                <a class="sort-options-menu dropdown-toggle" href="#" role="button" id="sortOptionsMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Nazwisko: Rosnąco (od A do Z)
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sortOptionsMenu">
+                    <a class="dropdown-item" id="lastNameAsc" href="#" th:href="${prefixUrl + 'sort_by=lastName&order_by=asc'}">Nazwisko: Rosnąco (od A do Z)</a>
+                    <a class="dropdown-item" id="lastNameDesc" href="#" th:href="${prefixUrl + 'sort_by=lastName&order_by=desc'}">Nazwisko: Malejąco (od Z do A)</a>
+                </div>
+            </div>
+        </div>
     </div>
     <table class="table">
         <thead>
@@ -55,34 +65,41 @@
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item disabled" th:class="${(users.getNumber() + 1) > 1 ? 'page-item' : 'page-item disabled'}">
-                <a class="page-link" href="#" th:href="@{${prefixUrl} + 'page=1'}">Pierwsza</a>
+                <a class="page-link" th:if="${sortParams == null}" href="#" th:href="@{${prefixUrl} + 'page=1'}">Pierwsza</a>
+                <a class="page-link" th:if="${sortParams != null}" href="#" th:href="@{${prefixUrl} + 'page=1' + '&' + ${sortParams}}">Pierwsza</a>
             </li>
             <li class="page-item disabled" th:class="${(users.getNumber() + 1) > 1 ? 'page-item' : 'page-item disabled'}">
-                <a class="page-link" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getNumber()}}">Poprzednia</a>
+                <a class="page-link" th:if="${sortParams == null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getNumber()}}">Poprzednia</a>
+                <a class="page-link" th:if="${sortParams != null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getNumber()} + '&' + ${sortParams}}">Poprzednia</a>
             </li>
             <li class="page-item disabled" th:if="${users.getTotalElements() == 0}">
                 <a class="page-link" href="#">1</a>
             </li>
             <th:block th:if="${users.getTotalElements() > 0}" th:each="i: ${#numbers.sequence((users.getNumber() + 1) - 3, (users.getNumber() + 1) - 1)}">
                 <li class="page-item" th:if="${i > 0}">
-                    <a class="page-link" href="#" th:href="@{${prefixUrl} + 'page=' + ${i}}" th:text="${i}">1</a>
+                    <a class="page-link" th:if="${sortParams == null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${i}}" th:text="${i}">1</a>
+                    <a class="page-link" th:if="${sortParams != null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${i} + '&' + ${sortParams}}" th:text="${i}">1</a>
                 </li>
             </th:block>
             <th:block th:if="${users.getTotalElements() > 0}" th:each="i: ${#numbers.sequence((users.getNumber() + 1), (users.getNumber() + 1) + 3)}">
                 <li class="page-item active" th:if="${i <= users.getTotalPages()}" th:class="${(users.getNumber() + 1) != i ? 'page-item' : 'page-item active'}">
-                    <a class="page-link" href="#" th:href="@{${prefixUrl} + 'page=' + ${i}}" th:text="${i}">1</a>
+                    <a class="page-link" th:if="${sortParams == null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${i}}" th:text="${i}">1</a>
+                    <a class="page-link" th:if="${sortParams != null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${i} + '&' + ${sortParams}}" th:text="${i}">1</a>
                 </li>
             </th:block>
             <li class="page-item disabled" th:class="${(users.getNumber() + 1) < users.getTotalPages() ? 'page-item' : 'page-item disabled'}">
-                <a class="page-link" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getNumber() + 2}}">Następna</a>
+                <a class="page-link" th:if="${sortParams == null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getNumber() + 2}}">Następna</a>
+                <a class="page-link" th:if="${sortParams != null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getNumber() + 2} + '&' + ${sortParams}}">Następna</a>
             </li>
             <li class="page-item disabled" th:class="${(users.getNumber() + 1) < users.getTotalPages() ? 'page-item' : 'page-item disabled'}">
-                <a class="page-link" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getTotalPages()}}">Ostatnia</a>
+                <a class="page-link" th:if="${sortParams == null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getTotalPages()}}">Ostatnia</a>
+                <a class="page-link" th:if="${sortParams != null}" href="#" th:href="@{${prefixUrl} + 'page=' + ${users.getTotalPages()} + '&' + ${sortParams}}">Ostatnia</a>
             </li>
         </ul>
     </nav>
 </div>
 
 <th:block th:replace="fragments :: scripts"></th:block>
+<script src="../static/scripts/main.js" th:src="@{/scripts/main.js}"></script>
 </body>
 </html>
