@@ -1,15 +1,16 @@
 package pl.patrykdepka.iteventsapp.appuser.controller;
 
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
 import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.appuser.service.AppUserService;
 
@@ -64,9 +65,21 @@ public class AppUserController {
     }
 
     @GetMapping("/users")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", appUserService.findAllUsers());
-        return "app-user-table";
+    public String getAllUsers(@RequestParam(name = "page", required = false) Integer pageNumber, Model model) {
+        int page = pageNumber != null ? pageNumber : 1;
+        if (page > 0) {
+            PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.ASC, "lastName"));
+            Page<AppUserTableDTO> users = appUserService.findAllUsers(pageRequest);
+            if (page <= users.getTotalPages()) {
+                model.addAttribute("users", users);
+                model.addAttribute("prefixUrl", "/users?");
+                return "app-user-table";
+            } else {
+                return "redirect:/users?page=" + users.getTotalPages();
+            }
+        } else {
+            return "redirect:/users?page=1";
+        }
     }
 
     @GetMapping("/users/{id}")

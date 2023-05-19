@@ -1,5 +1,7 @@
 package pl.patrykdepka.iteventsapp.appuser.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,8 +59,8 @@ public class AppUserServiceImpl implements AppUserService {
         return AppUserProfileDTOMapper.mapToAppUserProfileDTO(currentUser);
     }
 
-    public List<AppUserTableDTO> findAllUsers() {
-        return AppUserTableDTOMapper.mapToAppUserTableDTOs(appUserRepository.findAll());
+    public Page<AppUserTableDTO> findAllUsers(Pageable pageable) {
+        return AppUserTableDTOMapper.mapToAppUserTableDTOs(appUserRepository.findAll(pageable));
     }
 
     public AppUserProfileDTO findUserProfileByUserId(Long id) {

@@ -1,11 +1,11 @@
 package pl.patrykdepka.iteventsapp.appuser.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
-
-import java.util.List;
 
 public interface AppUserService {
 
@@ -15,7 +15,7 @@ public interface AppUserService {
 
     AppUserProfileDTO findUserProfile(AppUser currentUser);
 
-    List<AppUserTableDTO> findAllUsers();
+    Page<AppUserTableDTO> findAllUsers(Pageable pageable);
 
     AppUserProfileDTO findUserProfileByUserId(Long id);
 }

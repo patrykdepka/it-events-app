@@ -1,21 +1,16 @@
 package pl.patrykdepka.iteventsapp.appuser.mapper;
 
+import org.springframework.data.domain.Page;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class AppUserTableDTOMapper {
 
     private AppUserTableDTOMapper() {
     }
 
-    public static List<AppUserTableDTO> mapToAppUserTableDTOs(List<AppUser> users) {
-        return users
-                .stream()
-                .map(AppUserTableDTOMapper::mapToAppUserTableDTO)
-                .collect(Collectors.toList());
+    public static Page<AppUserTableDTO> mapToAppUserTableDTOs(Page<AppUser> users) {
+        return users.map(AppUserTableDTOMapper::mapToAppUserTableDTO);
     }
 
     private static AppUserTableDTO mapToAppUserTableDTO(AppUser user) {
