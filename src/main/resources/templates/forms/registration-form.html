@@ -36,6 +36,15 @@
             <div class="error-message" th:errors="*{lastName}">Błędy związane z nazwiskiem</div>
         </div>
         <div class="form-group">
+            <label for="dateOfBirth" class="form-label">DATA URODZENIA</label>
+            <input type="date"
+                   id="dateOfBirth" name="dateOfBirth"
+                   class="form-control" th:class="${#fields.hasErrors('dateOfBirth')} == FALSE ? 'form-control' : 'form-control is-invalid'"
+                   th:field="*{dateOfBirth}">
+            <div id="dateOfBirthErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.dateOfBirth.error.notNull.message}">Błędy związane z datą urodzenia</div>
+            <div class="error-message" th:errors="*{dateOfBirth}">Błędy związane z datą urodzenia</div>
+        </div>
+        <div class="form-group">
             <label for="email" class="form-label">E-MAIL</label>
             <input type="text"
                    id="email" name="email"

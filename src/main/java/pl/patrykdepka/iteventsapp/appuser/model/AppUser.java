@@ -5,6 +5,7 @@ import lombok.Setter;
 import pl.patrykdepka.iteventsapp.core.BaseEntity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,9 @@ public class AppUser extends BaseEntity {
     private Long id;
     private String firstName;
     private String lastName;
+    private LocalDate dateOfBirth;
+    private String city;
+    private String bio;
     private String email;
     private String password;
     private boolean enabled;

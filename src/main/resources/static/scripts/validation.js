@@ -12,6 +12,8 @@ function validateRegistrationForm() {
     const isNotFirstNameError = checkIfNotEmpty('firstName', firstNameValue);
     const lastNameValue = document.registrationForm.lastName.value;
     const isNotLastNameError = checkIfNotEmpty('lastName', lastNameValue);
+    const dateOfBirthValue = document.registrationForm.dateOfBirth.value;
+    const isNotDateOfBirthError = checkIfNotEmpty('dateOfBirth', dateOfBirthValue);
     const emailValue = document.registrationForm.email.value;
     const isNotEmailError = checkIfNotEmpty('email', emailValue);
     const passwordValue = document.registrationForm.password.value;
@@ -19,7 +21,7 @@ function validateRegistrationForm() {
     const confirmPasswordValue = document.registrationForm.confirmPassword.value;
     const isNotConfirmPasswordError = checkIfNotEmpty('confirmPassword', confirmPasswordValue);
 
-    return isNotFirstNameError && isNotLastNameError && isNotEmailError && isNotPasswordError && isNotConfirmPasswordError;
+    return isNotFirstNameError && isNotLastNameError && isNotDateOfBirthError && isNotEmailError && isNotPasswordError && isNotConfirmPasswordError;
 }
 
 function checkIfNotEmpty(fieldName, fieldValue) {

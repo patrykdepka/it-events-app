@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
+import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.appuser.service.AppUserService;
 
 import javax.validation.Valid;
@@ -18,10 +19,16 @@ import java.util.Locale;
 public class AppUserController {
     private final AppUserService appUserService;
     private final MessageSource messageSource;
+    private final CurrentUserFacade currentUserFacade;
 
-    public AppUserController(AppUserService appUserService, MessageSource messageSource) {
+    public AppUserController(
+            AppUserService appUserService,
+            MessageSource messageSource,
+            CurrentUserFacade currentUserFacade
+    ) {
         this.appUserService = appUserService;
         this.messageSource = messageSource;
+        this.currentUserFacade = currentUserFacade;
     }
 
     @GetMapping("/register")
@@ -47,5 +54,11 @@ public class AppUserController {
     @GetMapping("/confirmation")
     public String registrationConfirmation() {
         return "registration-confirmation";
+    }
+
+    @GetMapping("/profile")
+    public String getUserProfile(Model model) {
+        model.addAttribute("userProfile", appUserService.findUserProfile(currentUserFacade.getCurrentUser()));
+        return "app-user-profile";
     }
 }

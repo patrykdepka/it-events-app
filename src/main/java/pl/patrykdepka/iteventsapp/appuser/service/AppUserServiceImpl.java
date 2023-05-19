@@ -3,7 +3,9 @@ package pl.patrykdepka.iteventsapp.appuser.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
+import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserProfileDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.appuser.model.Role;
 import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
@@ -35,5 +37,9 @@ public class AppUserServiceImpl implements AppUserService {
         user.setAccountNonLocked(true);
         user.setRoles(List.of(Role.ROLE_USER));
         appUserRepository.save(user);
+    }
+
+    public AppUserProfileDTO findUserProfile(AppUser currentUser) {
+        return AppUserProfileDTOMapper.mapToAppUserProfileDTO(currentUser);
     }
 }

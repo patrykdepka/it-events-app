@@ -26,6 +26,9 @@ public class AppUserRegistrationDTO {
     @NotEmpty(message = "{form.field.lastName.error.notEmpty.message}")
     @Size(min = 2, max = 50, message = "{form.field.lastName.error.size.message}")
     private String lastName;
+    @NotNull(message = "{form.field.dateOfBirth.error.notNull.message}")
+    @NotEmpty(message = "{form.field.dateOfBirth.error.notEmpty.message}")
+    private String dateOfBirth;
     @NotNull(message = "{form.field.email.error.notNull.message}")
     @NotEmpty(message = "{form.field.email.error.notEmpty.message}")
     @Email(message = "{form.field.email.error.incorrectEmail.message}")

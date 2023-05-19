@@ -68,3 +68,8 @@
     background-color: #d68910;
     border-color: #d68910;
 }
+
+.app-label {
+    font-weight: bold;
+    text-align: left;
+}

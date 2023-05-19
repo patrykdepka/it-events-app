@@ -9,4 +9,6 @@
     <include file="changelog/2023-05-18/0003_app_users_data.sql" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-18/0004_app_user_roles_data.sql" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-18/0005_create_table_persistent_logins.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-19/0006_add_app_user_profile_columns.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-19/0007_app_user_profile_data.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
