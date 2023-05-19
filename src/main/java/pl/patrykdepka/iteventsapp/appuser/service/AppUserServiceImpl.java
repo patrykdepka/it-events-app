@@ -14,6 +14,7 @@ import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserTableDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.appuser.model.Role;
 import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
+import pl.patrykdepka.iteventsapp.appuser.specification.AppUserSpecification;
 import pl.patrykdepka.iteventsapp.profileimage.service.ProfileImageService;
 
 import java.time.LocalDate;
@@ -61,6 +62,22 @@ public class AppUserServiceImpl implements AppUserService {
 
     public Page<AppUserTableDTO> findAllUsers(Pageable pageable) {
         return AppUserTableDTOMapper.mapToAppUserTableDTOs(appUserRepository.findAll(pageable));
+    }
+
+    public Page<AppUserTableDTO> findUsersBySearch(String searchQuery, Pageable pageable) {
+        searchQuery = searchQuery.toLowerCase();
+        String[] searchWords = searchQuery.split(" ");
+
+        if (searchWords.length == 1 && !"".equals(searchWords[0])) {
+            return AppUserTableDTOMapper
+                    .mapToAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0]), pageable));
+        }
+        if (searchWords.length == 2) {
+            return AppUserTableDTOMapper
+                    .mapToAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0], searchWords[1]), pageable));
+        }
+
+        return Page.empty();
     }
 
     public AppUserProfileDTO findUserProfileByUserId(Long id) {
