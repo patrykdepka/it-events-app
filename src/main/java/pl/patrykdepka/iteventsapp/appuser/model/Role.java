@@ -1,16 +1,22 @@
 package pl.patrykdepka.iteventsapp.appuser.model;
 
 public enum Role {
-    ROLE_ADMIN("ADMIN"),
-    ROLE_USER("USER");
+    ROLE_ADMIN("ADMIN", "Administrator"),
+    ROLE_USER("USER", "Użytkownik");
 
     private String role;
+    private String displayName;
 
-    Role(String role) {
+    Role(String role, String displayName) {
         this.role = role;
+        this.displayName = displayName;
     }
 
     public String getRole() {
         return role;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }

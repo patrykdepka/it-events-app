@@ -129,6 +129,10 @@
     color: #d68910;
 }
 
+.admin-user-table td {
+    vertical-align: middle;
+}
+
 .page-item.active .page-link {
     background-color: #f39c12;
     border-color: #f39c12;
