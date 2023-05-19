@@ -11,4 +11,7 @@
     <include file="changelog/2023-05-18/0005_create_table_persistent_logins.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-19/0006_add_app_user_profile_columns.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-19/0007_app_user_profile_data.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-19/0008_create_table_profile_image.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-19/0009_create_table_app_user_profile_image.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-19/0010_profile_images_data.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

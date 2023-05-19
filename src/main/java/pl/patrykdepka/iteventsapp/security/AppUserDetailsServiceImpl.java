@@ -9,6 +9,7 @@ import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
 
 import javax.transaction.Transactional;
+import java.util.Base64;
 
 @Service
 public class AppUserDetailsServiceImpl implements AppUserDetailsService {
@@ -29,6 +30,8 @@ public class AppUserDetailsServiceImpl implements AppUserDetailsService {
 
     private UserDetails createAppUserDetails(AppUser user) {
         return new AppUserDetails.AppUserDetailsBuilder()
+                .profileImageType(user.getProfileImage().getFileType())
+                .profileImageData(Base64.getEncoder().encodeToString(user.getProfileImage().getFileData()))
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .username(user.getEmail())

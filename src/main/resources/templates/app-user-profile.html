@@ -13,6 +13,9 @@
     <div class="row">
         <div class="col-sm-4">
             <div style="width: 100%;">
+                <img th:src="${'data:' + userProfile.profileImageType + ';base64,' + userProfile.profileImageData}" width="100" height="100">
+            </div>
+            <div style="width: 100%;">
                 <h2 th:text="${userProfile.firstName + ' ' + userProfile.lastName}">Jan Kowalski</h2>
             </div>
             <div style="width: 100%;">

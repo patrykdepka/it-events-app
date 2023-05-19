@@ -10,6 +10,8 @@ import java.util.List;
 
 @Getter
 public class AppUserDetails extends User {
+    private final String profileImageType;
+    private final String profileImageData;
     private final String firstName;
     private final String lastName;
 
@@ -23,11 +25,15 @@ public class AppUserDetails extends User {
                 appUserDetailsBuilder.accountNonLocked,
                 appUserDetailsBuilder.authorities
         );
+        this.profileImageType = appUserDetailsBuilder.profileImageType;
+        this.profileImageData = appUserDetailsBuilder.profileImageData;
         this.firstName = appUserDetailsBuilder.firstName;
         this.lastName = appUserDetailsBuilder.lastName;
     }
 
     public static class AppUserDetailsBuilder {
+        private String profileImageType;
+        private String profileImageData;
         private String firstName;
         private String lastName;
         private String username;
@@ -35,6 +41,16 @@ public class AppUserDetails extends User {
         private boolean enabled;
         private boolean accountNonLocked;
         private List<GrantedAuthority> authorities;
+
+        public AppUserDetailsBuilder profileImageType(String profileImageType) {
+            this.profileImageType = profileImageType;
+            return this;
+        }
+
+        public AppUserDetailsBuilder profileImageData(String profileImageData) {
+            this.profileImageData = profileImageData;
+            return this;
+        }
 
         public AppUserDetailsBuilder firstName(String firstName) {
             this.firstName = firstName;

@@ -15,12 +15,13 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle"
+                   style="padding: 0;"
                    href="#"
                    id="navbarDropdownMenuAppUserLink"
                    data-toggle="dropdown"
                    aria-haspopup="true"
                    aria-expanded="false">
-                    <span th:text="${#authentication.principal.firstName + ' ' + #authentication.principal.lastName}">Jan Kowalski</span>
+                    <img style="border-radius: 50%;" th:src="${'data:' + #authentication.principal.profileImageType + ';base64,' + #authentication.principal.profileImageData}" width="40" height="40">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuAppUserLink">
                     <a class="dropdown-item" th:href="@{/profile}" th:text="${#authentication.principal.firstName + ' ' + #authentication.principal.lastName}">Jan Kowalski</a>

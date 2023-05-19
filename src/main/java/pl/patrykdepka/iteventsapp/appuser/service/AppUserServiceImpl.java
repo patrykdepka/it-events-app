@@ -9,17 +9,26 @@ import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserProfileDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.appuser.model.Role;
 import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
+import pl.patrykdepka.iteventsapp.profileimage.service.ProfileImageService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileImageService profileImageService;
 
-    public AppUserServiceImpl(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    public AppUserServiceImpl(
+            AppUserRepository appUserRepository,
+            PasswordEncoder passwordEncoder,
+            ProfileImageService profileImageService
+    ) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.profileImageService = profileImageService;
     }
 
     public boolean checkIfUserExists(String email) {
@@ -29,6 +38,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Transactional
     public void createUser(AppUserRegistrationDTO newUserData) {
         AppUser user = new AppUser();
+        user.setProfileImage(profileImageService.createDefaultProfileImage());
         user.setFirstName(newUserData.getFirstName());
         user.setLastName(newUserData.getLastName());
         user.setDateOfBirth(LocalDate.parse(newUserData.getDateOfBirth(), DateTimeFormatter.ISO_LOCAL_DATE));

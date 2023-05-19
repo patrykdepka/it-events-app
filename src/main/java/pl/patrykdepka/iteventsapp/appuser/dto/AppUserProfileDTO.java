@@ -6,6 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AppUserProfileDTO {
+    private String profileImageType;
+    private String profileImageData;
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -20,11 +22,23 @@ public class AppUserProfileDTO {
     }
 
     public static class AppUserProfileDTOBuilder {
+        private String profileImageType;
+        private String profileImageData;
         private String firstName;
         private String lastName;
         private String dateOfBirth;
         private String city;
         private String bio;
+
+        public AppUserProfileDTOBuilder profileImageType(String profileImageType) {
+            this.profileImageType = profileImageType;
+            return this;
+        }
+
+        public AppUserProfileDTOBuilder profileImageData(String profileImageData) {
+            this.profileImageData = profileImageData;
+            return this;
+        }
 
         public AppUserProfileDTOBuilder firstName(String firstName) {
             this.firstName = firstName;
@@ -53,6 +67,8 @@ public class AppUserProfileDTO {
 
         public AppUserProfileDTO build() {
             AppUserProfileDTO userProfile = new AppUserProfileDTO();
+            userProfile.setProfileImageType(profileImageType);
+            userProfile.setProfileImageData(profileImageData);
             userProfile.setFirstName(firstName);
             userProfile.setLastName(lastName);
             userProfile.setDateOfBirth(dateOfBirth);
