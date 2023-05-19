@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
 import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
@@ -59,6 +60,18 @@ public class AppUserController {
     @GetMapping("/profile")
     public String getUserProfile(Model model) {
         model.addAttribute("userProfile", appUserService.findUserProfile(currentUserFacade.getCurrentUser()));
+        return "app-user-profile";
+    }
+
+    @GetMapping("/users")
+    public String getAllUsers(Model model) {
+        model.addAttribute("users", appUserService.findAllUsers());
+        return "app-user-table";
+    }
+
+    @GetMapping("/users/{id}")
+    public String getUserProfile(@PathVariable Long id, Model model) {
+        model.addAttribute("userProfile", appUserService.findUserProfileByUserId(id));
         return "app-user-profile";
     }
 }

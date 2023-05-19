@@ -73,3 +73,15 @@
     font-weight: bold;
     text-align: left;
 }
+
+.table-heading {
+    text-align: center;
+}
+
+.icon-button {
+    color: #f39c12;
+}
+
+.icon-button:hover {
+    color: #d68910;
+}

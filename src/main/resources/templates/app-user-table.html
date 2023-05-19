@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Użytkownicy · IT Events</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link href="../static/styles/main.css" th:href="@{/styles/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+<div class="container">
+    <div class="table-heading">
+        <h2>Użytkownicy</h2>
+    </div>
+    <div class="row" style="margin: 0; padding: 5px; background-color: #ffffff; display: flex; justify-content: center; align-items: center;">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" style="text-align: center;">
+            <span th:text="'Liczba użytkowników: ' + ${users.size()}">Liczba użytkowników: 0</span>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Imię</th>
+            <th scope="col">Nazwisko</th>
+            <th style="text-align: center;" scope="col">E-mail</th>
+            <th style="text-align: center;" scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, status: ${users}">
+            <td th:text="${status.count}">1</td>
+            <td th:text="${user.firstName}">Jan</td>
+            <td th:text="${user.lastName}">Kowalski</td>
+            <td style="text-align: center;" th:text="${user.email}">jankowalski@example.com</td>
+            <td style="text-align: center;">
+                <a href="#" th:href="@{'/users/' + ${user.id}}"><i class="fa-solid fa-user icon-button"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<th:block th:replace="fragments :: scripts"></th:block>
+</body>
+</html>

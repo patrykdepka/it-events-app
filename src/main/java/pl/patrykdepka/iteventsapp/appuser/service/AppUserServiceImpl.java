@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.exception.AppUserNotFoundException;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserProfileDTOMapper;
+import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserTableDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.appuser.model.Role;
 import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
@@ -52,5 +55,16 @@ public class AppUserServiceImpl implements AppUserService {
 
     public AppUserProfileDTO findUserProfile(AppUser currentUser) {
         return AppUserProfileDTOMapper.mapToAppUserProfileDTO(currentUser);
+    }
+
+    public List<AppUserTableDTO> findAllUsers() {
+        return AppUserTableDTOMapper.mapToAppUserTableDTOs(appUserRepository.findAll());
+    }
+
+    public AppUserProfileDTO findUserProfileByUserId(Long id) {
+        return appUserRepository
+                .findById(id)
+                .map(AppUserProfileDTOMapper::mapToAppUserProfileDTO)
+                .orElseThrow(() -> new AppUserNotFoundException("User with ID " + id + " not found"));
     }
 }
