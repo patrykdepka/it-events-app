@@ -35,6 +35,17 @@ function validateAdminUserProfileEditForm() {
     return isNotFirstNameError && isNotLastNameError && isNotDateOfBirthError;
 }
 
+function validateUserPasswordEditForm() {
+    const currentPasswordValue = document.userPasswordEditForm.currentPassword.value;
+    const isNotCurrentPasswordError = checkIfNotEmpty('currentPassword', currentPasswordValue);
+    const newPasswordValue = document.userPasswordEditForm.newPassword.value;
+    const isNotNewPasswordError = checkIfNotEmpty('newPassword', newPasswordValue);
+    const confirmNewPasswordValue = document.userPasswordEditForm.confirmNewPassword.value;
+    const isNotConfirmNewPasswordError = checkIfNotEmpty('confirmNewPassword', confirmNewPasswordValue);
+
+    return isNotCurrentPasswordError && isNotNewPasswordError && isNotConfirmNewPasswordError;
+}
+
 function checkIfNotEmpty(fieldName, fieldValue) {
     if (!fieldValue) {
         document.getElementById(`${fieldName}`).className='form-control is-invalid';
