@@ -9,9 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import pl.patrykdepka.iteventsapp.appuser.dto.AppUserPasswordEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
 import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.appuser.service.AppUserService;
 
@@ -171,5 +173,31 @@ public class AppUserController {
             model.addAttribute("profileUpdated", true);
         }
         return "forms/app-user-profile-edit-form";
+    }
+
+    @GetMapping("/settings/password")
+    public String showUserPasswordEditForm(Model model) {
+        model.addAttribute("newUserPassword", new AppUserPasswordEditDTO());
+        return "forms/app-user-password-edit-form";
+    }
+
+    @PatchMapping("/settings/password")
+    public String updateUserPassword(@Valid @ModelAttribute(name = "newUserPassword") AppUserPasswordEditDTO newUserPassword,
+                                     BindingResult bindingResult,
+                                     Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("passwordUpdated", false);
+            return "forms/app-user-password-edit-form";
+        } else {
+            try {
+                model.addAttribute("newUserPassword", appUserService.updateUserPassword(currentUserFacade.getCurrentUser(), newUserPassword));
+                model.addAttribute("passwordUpdated", true);
+                return "forms/app-user-password-edit-form";
+            } catch (IncorrectCurrentPasswordException e) {
+                bindingResult.addError(new FieldError("newUserPassword", "currentPassword", messageSource.getMessage("form.field.currentPassword.error.invalidCurrentPassword.message", null, Locale.getDefault())));
+                model.addAttribute("passwordUpdated", false);
+                return "forms/app-user-password-edit-form";
+            }
+        }
     }
 }

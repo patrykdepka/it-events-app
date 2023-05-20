@@ -5,11 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.*;
 import pl.patrykdepka.iteventsapp.appuser.exception.AppUserNotFoundException;
+import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserProfileDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserProfileEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserTableDTOMapper;
@@ -104,6 +102,16 @@ public class AppUserServiceImpl implements AppUserService {
         return AppUserProfileEditDTOMapper.mapToAppUserProfileEditDTO(setUserProfileFields(userProfile, currentUser));
     }
 
+    @Transactional
+    public AppUserPasswordEditDTO updateUserPassword(AppUser currentUser, AppUserPasswordEditDTO newUserPasswordData) {
+        if (!checkIfCurrentPasswordIsCorrect(currentUser, newUserPasswordData.getCurrentPassword())) {
+            throw new IncorrectCurrentPasswordException();
+        }
+
+        currentUser.setPassword(passwordEncoder.encode(newUserPasswordData.getNewPassword()));
+        return new AppUserPasswordEditDTO();
+    }
+
     private AppUser setUserProfileFields(AppUserProfileEditDTO source, AppUser target) {
         if (source.getProfileImage() != null && !source.getProfileImage().isEmpty()) {
             Optional<ProfileImage> profileImage = profileImageService.updateProfileImage(target, source.getProfileImage());
@@ -120,5 +128,9 @@ public class AppUserServiceImpl implements AppUserService {
         }
 
         return target;
+    }
+
+    private boolean checkIfCurrentPasswordIsCorrect(AppUser user, String currentPassword) {
+        return passwordEncoder.matches(currentPassword, user.getPassword());
     }
 }

@@ -2,10 +2,7 @@ package pl.patrykdepka.iteventsapp.appuser.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.*;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 
 public interface AppUserService {
@@ -25,4 +22,6 @@ public interface AppUserService {
     AppUserProfileEditDTO findUserProfileToEdit(AppUser currentUser);
 
     AppUserProfileEditDTO updateUserProfile(AppUser currentUser, AppUserProfileEditDTO userProfile);
+
+    AppUserPasswordEditDTO updateUserPassword(AppUser currentUser, AppUserPasswordEditDTO newUserPassword);
 }
