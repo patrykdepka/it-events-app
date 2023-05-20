@@ -46,6 +46,17 @@ function validateUserPasswordEditForm() {
     return isNotCurrentPasswordError && isNotNewPasswordError && isNotConfirmNewPasswordError;
 }
 
+function validateAdminUserPasswordEditForm() {
+    const adminPasswordValue = document.adminUserPasswordEditForm.adminPassword.value;
+    const isNotAdminPasswordError = checkIfNotEmpty('adminPassword', adminPasswordValue);
+    const newPasswordValue = document.adminUserPasswordEditForm.newPassword.value;
+    const isNotNewPasswordError = checkIfNotEmpty('newPassword', newPasswordValue);
+    const confirmNewPasswordValue = document.adminUserPasswordEditForm.confirmNewPassword.value;
+    const isNotConfirmNewPasswordError = checkIfNotEmpty('confirmNewPassword', confirmNewPasswordValue);
+
+    return isNotAdminPasswordError && isNotNewPasswordError && isNotConfirmNewPasswordError;
+}
+
 function checkIfNotEmpty(fieldName, fieldValue) {
     if (!fieldValue) {
         document.getElementById(`${fieldName}`).className='form-control is-invalid';
