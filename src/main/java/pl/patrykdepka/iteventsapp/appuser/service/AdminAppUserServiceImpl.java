@@ -2,10 +2,13 @@ package pl.patrykdepka.iteventsapp.appuser.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
 import pl.patrykdepka.iteventsapp.appuser.exception.AppUserNotFoundException;
+import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AdminAppUserProfileEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AdminAppUserTableDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
@@ -23,10 +26,16 @@ import java.util.Optional;
 public class AdminAppUserServiceImpl implements AdminAppUserService {
     private final AppUserRepository appUserRepository;
     private final ProfileImageService profileImageService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AdminAppUserServiceImpl(AppUserRepository appUserRepository, ProfileImageService profileImageService) {
+    public AdminAppUserServiceImpl(
+            AppUserRepository appUserRepository,
+            ProfileImageService profileImageService,
+            PasswordEncoder passwordEncoder
+    ) {
         this.appUserRepository = appUserRepository;
         this.profileImageService = profileImageService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Page<AdminAppUserTableDTO> findAllUsers(Pageable pageable) {
@@ -65,6 +74,25 @@ public class AdminAppUserServiceImpl implements AdminAppUserService {
                 .orElseThrow(() -> new AppUserNotFoundException("User with ID " + id + " not found"));
     }
 
+    @Transactional
+    public AdminAppUserPasswordEditDTO updateUserPassword(AppUser currentUser, Long id, AdminAppUserPasswordEditDTO newUserPassword) {
+        if (!checkIfAdminPasswordIsCorrect(currentUser, newUserPassword.getAdminPassword())) {
+            throw new IncorrectCurrentPasswordException();
+        }
+
+        appUserRepository
+                .findById(id)
+                .ifPresentOrElse(
+                        user -> {
+                            user.setPassword(passwordEncoder.encode(newUserPassword.getNewPassword()));
+                        },
+                        () -> {
+                            throw new AppUserNotFoundException(String.format("User with ID %s not found", id));
+                        }
+                );
+        return new AdminAppUserPasswordEditDTO(id);
+    }
+
     private AppUser setUserProfileFields(AdminAppUserProfileEditDTO source, AppUser target) {
         if (source.getProfileImage() != null && !source.getProfileImage().isEmpty()) {
             Optional<ProfileImage> profileImage = profileImageService.updateProfileImage(target, source.getProfileImage());
@@ -87,5 +115,9 @@ public class AdminAppUserServiceImpl implements AdminAppUserService {
         }
 
         return target;
+    }
+
+    private boolean checkIfAdminPasswordIsCorrect(AppUser admin, String adminPassword) {
+        return passwordEncoder.matches(adminPassword, admin.getPassword());
     }
 }

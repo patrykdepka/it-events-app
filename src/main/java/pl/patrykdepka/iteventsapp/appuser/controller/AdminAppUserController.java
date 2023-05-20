@@ -1,24 +1,38 @@
 package pl.patrykdepka.iteventsapp.appuser.controller;
 
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
+import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.appuser.service.AdminAppUserService;
 
 import javax.validation.Valid;
+import java.util.Locale;
 
 @Controller
 public class AdminAppUserController {
     private final AdminAppUserService adminAppUserService;
+    private final CurrentUserFacade currentUserFacade;
+    private final MessageSource messageSource;
 
-    public AdminAppUserController(AdminAppUserService adminAppUserService) {
+    public AdminAppUserController(
+            AdminAppUserService adminAppUserService,
+            CurrentUserFacade currentUserFacade,
+            MessageSource messageSource
+    ) {
         this.adminAppUserService = adminAppUserService;
+        this.currentUserFacade = currentUserFacade;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("/admin/users")
@@ -122,5 +136,33 @@ public class AdminAppUserController {
             model.addAttribute("profileUpdated", true);
         }
         return "admin/forms/app-user-profile-edit-form";
+    }
+
+    @GetMapping("/admin/users/{id}/settings/password")
+    public String showUserPasswordEditForm(@PathVariable Long id, Model model) {
+        model.addAttribute("passwordUpdated", false);
+        model.addAttribute("newUserPassword", new AdminAppUserPasswordEditDTO(id));
+        return "admin/forms/app-user-password-edit-form";
+    }
+
+    @PatchMapping("/admin/users/{id}/settings/password")
+    public String updateUserPassword(@PathVariable Long id,
+                                     @Valid @ModelAttribute(name = "newUserPassword") AdminAppUserPasswordEditDTO newUserPassword,
+                                     BindingResult bindingResult,
+                                     Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("passwordUpdated", false);
+            return "admin/forms/app-user-password-edit-form";
+        } else {
+            try {
+                model.addAttribute("newUserPassword", adminAppUserService.updateUserPassword(currentUserFacade.getCurrentUser(), id, newUserPassword));
+                model.addAttribute("passwordUpdated", true);
+                return "admin/forms/app-user-password-edit-form";
+            } catch (IncorrectCurrentPasswordException e) {
+                bindingResult.addError(new FieldError("newUserPassword", "adminPassword", messageSource.getMessage("form.field.currentPassword.error.invalidCurrentPassword.message", null, Locale.getDefault())));
+                model.addAttribute("passwordUpdated", false);
+                return "admin/forms/app-user-password-edit-form";
+            }
+        }
     }
 }
