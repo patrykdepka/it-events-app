@@ -1,6 +1,9 @@
 package pl.patrykdepka.iteventsapp.security;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -42,5 +45,11 @@ public class AppUserDetailsServiceImpl implements AppUserDetailsService {
                         .map(role -> (GrantedAuthority) role::name)
                         .toList())
                 .build();
+    }
+
+    public void updateAppUserDetails(AppUser user) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        Authentication newAuthenticationToken = new UsernamePasswordAuthenticationToken(createAppUserDetails(user), currentUser.getCredentials(), currentUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuthenticationToken);
     }
 }

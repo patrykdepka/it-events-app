@@ -6,35 +6,43 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
 import pl.patrykdepka.iteventsapp.appuser.exception.AppUserNotFoundException;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserProfileDTOMapper;
+import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserProfileEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AppUserTableDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.appuser.model.Role;
 import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
 import pl.patrykdepka.iteventsapp.appuser.specification.AppUserSpecification;
+import pl.patrykdepka.iteventsapp.profileimage.model.ProfileImage;
 import pl.patrykdepka.iteventsapp.profileimage.service.ProfileImageService;
+import pl.patrykdepka.iteventsapp.security.AppUserDetailsService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final ProfileImageService profileImageService;
+    private final AppUserDetailsService appUserDetailsService;
 
     public AppUserServiceImpl(
             AppUserRepository appUserRepository,
             PasswordEncoder passwordEncoder,
-            ProfileImageService profileImageService
+            ProfileImageService profileImageService,
+            AppUserDetailsService appUserDetailsService
     ) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.profileImageService = profileImageService;
+        this.appUserDetailsService = appUserDetailsService;
     }
 
     public boolean checkIfUserExists(String email) {
@@ -85,5 +93,32 @@ public class AppUserServiceImpl implements AppUserService {
                 .findById(id)
                 .map(AppUserProfileDTOMapper::mapToAppUserProfileDTO)
                 .orElseThrow(() -> new AppUserNotFoundException("User with ID " + id + " not found"));
+    }
+
+    public AppUserProfileEditDTO findUserProfileToEdit(AppUser currentUser) {
+        return AppUserProfileEditDTOMapper.mapToAppUserProfileEditDTO(currentUser);
+    }
+
+    @Transactional
+    public AppUserProfileEditDTO updateUserProfile(AppUser currentUser, AppUserProfileEditDTO userProfile) {
+        return AppUserProfileEditDTOMapper.mapToAppUserProfileEditDTO(setUserProfileFields(userProfile, currentUser));
+    }
+
+    private AppUser setUserProfileFields(AppUserProfileEditDTO source, AppUser target) {
+        if (source.getProfileImage() != null && !source.getProfileImage().isEmpty()) {
+            Optional<ProfileImage> profileImage = profileImageService.updateProfileImage(target, source.getProfileImage());
+            if (profileImage.isPresent()) {
+                target.setProfileImage(profileImage.get());
+                appUserDetailsService.updateAppUserDetails(target);
+            }
+        }
+        if (source.getCity() != null && !source.getCity().equals(target.getCity())) {
+            target.setCity(source.getCity());
+        }
+        if (source.getBio() != null && !source.getBio().equals(target.getBio())) {
+            target.setBio(source.getBio());
+        }
+
+        return target;
     }
 }

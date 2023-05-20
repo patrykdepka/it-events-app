@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import pl.patrykdepka.iteventsapp.appuser.dto.AppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AppUserTableDTO;
 import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
@@ -150,5 +151,25 @@ public class AppUserController {
     public String getUserProfile(@PathVariable Long id, Model model) {
         model.addAttribute("userProfile", appUserService.findUserProfileByUserId(id));
         return "app-user-profile";
+    }
+
+    @GetMapping("/settings/profile")
+    public String showUserProfileEditForm(Model model) {
+        model.addAttribute("profileUpdated", false);
+        model.addAttribute("userProfile", appUserService.findUserProfileToEdit(currentUserFacade.getCurrentUser()));
+        return "forms/app-user-profile-edit-form";
+    }
+
+    @PatchMapping("/settings/profile")
+    public String updateUserProfile(@Valid @ModelAttribute(name = "userProfile") AppUserProfileEditDTO userProfile,
+                                    BindingResult bindingResult,
+                                    Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("profileUpdated", false);
+        } else {
+            model.addAttribute("userProfile", appUserService.updateUserProfile(currentUserFacade.getCurrentUser(), userProfile));
+            model.addAttribute("profileUpdated", true);
+        }
+        return "forms/app-user-profile-edit-form";
     }
 }
