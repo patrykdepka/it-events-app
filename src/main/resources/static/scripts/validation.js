@@ -24,6 +24,17 @@ function validateRegistrationForm() {
     return isNotFirstNameError && isNotLastNameError && isNotDateOfBirthError && isNotEmailError && isNotPasswordError && isNotConfirmPasswordError;
 }
 
+function validateAdminUserProfileEditForm() {
+    const firstNameValue = document.adminUserProfileEditForm.firstName.value;
+    const isNotFirstNameError = checkIfNotEmpty('firstName', firstNameValue);
+    const lastNameValue = document.adminUserProfileEditForm.lastName.value;
+    const isNotLastNameError = checkIfNotEmpty('lastName', lastNameValue);
+    const dateOfBirthValue = document.adminUserProfileEditForm.dateOfBirth.value;
+    const isNotDateOfBirthError = checkIfNotEmpty('dateOfBirth', dateOfBirthValue);
+
+    return isNotFirstNameError && isNotLastNameError && isNotDateOfBirthError;
+}
+
 function checkIfNotEmpty(fieldName, fieldValue) {
     if (!fieldValue) {
         document.getElementById(`${fieldName}`).className='form-control is-invalid';
