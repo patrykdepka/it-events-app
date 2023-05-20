@@ -4,12 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminDeleteAppUserDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.*;
 import pl.patrykdepka.iteventsapp.appuser.exception.AppUserNotFoundException;
 import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
+import pl.patrykdepka.iteventsapp.appuser.mapper.AdminAppUserAccountEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AdminAppUserProfileEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AdminAppUserTableDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
@@ -59,6 +57,22 @@ public class AdminAppUserServiceImpl implements AdminAppUserService {
         return Page.empty();
     }
 
+    public AdminAppUserAccountEditDTO findUserAccountToEdit(Long id) {
+        return appUserRepository
+                .findById(id)
+                .map(AdminAppUserAccountEditDTOMapper::mapToAdminAppUserAccountEditDTO)
+                .orElseThrow(() -> new AppUserNotFoundException("User with ID " + id + " not found"));
+    }
+
+    @Transactional
+    public AdminAppUserAccountEditDTO updateUserAccount(Long id, AdminAppUserAccountEditDTO userAccount) {
+        return appUserRepository
+                .findById(id)
+                .map(target -> setUserAccountFields(userAccount, target))
+                .map(AdminAppUserAccountEditDTOMapper::mapToAdminAppUserAccountEditDTO)
+                .orElseThrow(() -> new AppUserNotFoundException("User with ID " + id + " not found"));
+    }
+
     public AdminAppUserProfileEditDTO findUserProfileToEdit(Long id) {
         return appUserRepository
                 .findById(id)
@@ -102,6 +116,20 @@ public class AdminAppUserServiceImpl implements AdminAppUserService {
         if (!currentUser.getId().equals(deleteUserData.getId())) {
             appUserRepository.deleteById(deleteUserData.getId());
         }
+    }
+
+    private AppUser setUserAccountFields(AdminAppUserAccountEditDTO source, AppUser target) {
+        if (source.isEnabled() != target.isEnabled()) {
+            target.setEnabled(source.isEnabled());
+        }
+        if (source.isAccountNonLocked() != target.isAccountNonLocked()) {
+            target.setAccountNonLocked(source.isAccountNonLocked());
+        }
+        if (!source.getRoles().equals(target.getRoles())) {
+            target.setRoles(source.getRoles());
+        }
+
+        return target;
     }
 
     private AppUser setUserProfileFields(AdminAppUserProfileEditDTO source, AppUser target) {

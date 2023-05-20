@@ -9,10 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminDeleteAppUserDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.*;
 import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
 import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.appuser.service.AdminAppUserService;
@@ -116,6 +113,27 @@ public class AdminAppUserController {
         } else {
             return "redirect:/admin/users/results?search_query=";
         }
+    }
+
+    @GetMapping("/admin/users/{id}/settings/account")
+    public String showUserAccountEditForm(@PathVariable Long id, Model model) {
+        model.addAttribute("accountUpdated", false);
+        model.addAttribute("userAccount", adminAppUserService.findUserAccountToEdit(id));
+        return "admin/forms/app-user-account-edit-form";
+    }
+
+    @PatchMapping("/admin/users/{id}/settings/account")
+    public String updateUserAccount(@PathVariable Long id,
+                                    @Valid @ModelAttribute(name = "userAccount") AdminAppUserAccountEditDTO userAccount,
+                                    BindingResult bindingResult,
+                                    Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("accountUpdated", false);
+        } else {
+            model.addAttribute("userAccount", adminAppUserService.updateUserAccount(id, userAccount));
+            model.addAttribute("accountUpdated", true);
+        }
+        return "admin/forms/app-user-account-edit-form";
     }
 
     @GetMapping("/admin/users/{id}/settings/profile")

@@ -2,10 +2,7 @@ package pl.patrykdepka.iteventsapp.appuser.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
-import pl.patrykdepka.iteventsapp.appuser.dto.AdminDeleteAppUserDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.*;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 
 public interface AdminAppUserService {
@@ -13,6 +10,10 @@ public interface AdminAppUserService {
     Page<AdminAppUserTableDTO> findAllUsers(Pageable pageable);
 
     Page<AdminAppUserTableDTO> findUsersBySearch(String searchQuery, Pageable pageable);
+
+    AdminAppUserAccountEditDTO findUserAccountToEdit(Long id);
+
+    AdminAppUserAccountEditDTO updateUserAccount(Long id, AdminAppUserAccountEditDTO userAccount);
 
     AdminAppUserProfileEditDTO findUserProfileToEdit(Long id);
 
