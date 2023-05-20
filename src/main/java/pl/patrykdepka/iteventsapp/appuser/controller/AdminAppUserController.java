@@ -5,10 +5,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
 import pl.patrykdepka.iteventsapp.appuser.service.AdminAppUserService;
+
+import javax.validation.Valid;
 
 @Controller
 public class AdminAppUserController {
@@ -98,5 +101,26 @@ public class AdminAppUserController {
         } else {
             return "redirect:/admin/users/results?search_query=";
         }
+    }
+
+    @GetMapping("/admin/users/{id}/settings/profile")
+    public String showUserProfileEditForm(@PathVariable Long id, Model model) {
+        model.addAttribute("profileUpdated", false);
+        model.addAttribute("userProfile", adminAppUserService.findUserProfileToEdit(id));
+        return "admin/forms/app-user-profile-edit-form";
+    }
+
+    @PatchMapping("/admin/users/{id}/settings/profile")
+    public String updateUserProfile(@PathVariable Long id,
+                                    @Valid @ModelAttribute(name = "userProfile") AdminAppUserProfileEditDTO userProfile,
+                                    BindingResult bindingResult,
+                                    Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("profileUpdated", false);
+        } else {
+            model.addAttribute("userProfile", adminAppUserService.updateUserProfile(id, userProfile));
+            model.addAttribute("profileUpdated", true);
+        }
+        return "admin/forms/app-user-profile-edit-form";
     }
 }

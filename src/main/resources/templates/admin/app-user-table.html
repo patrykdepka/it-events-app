@@ -55,6 +55,7 @@
             <th style="text-align: center;" scope="col">Zablokowany</th>
             <th style="text-align: center;" scope="col">Rola</th>
             <th style="text-align: center;" scope="col"></th>
+            <th style="text-align: center;" scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -71,10 +72,14 @@
             <td style="text-align: center;">
                 <a href="#" th:href="@{'/users/' + ${user.id}}"><i class="fa-solid fa-user icon-button"></i></a>
             </td>
+            <td>
+                <a href="#" th:href="@{'/admin/users/' + ${user.id} + '/settings/profile'}"><i class="fa-solid fa-pen icon-button"></i></a>
+            </td>
         </tr>
         <th:block th:if="${users.getNumberOfElements() < 10}" th:each="i, status: ${#numbers.sequence((1 + (users.getNumber() * 10) + users.getNumberOfElements()), (users.getNumber() + 1) * 10)}">
             <tr>
                 <td th:text="${i}">1</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
