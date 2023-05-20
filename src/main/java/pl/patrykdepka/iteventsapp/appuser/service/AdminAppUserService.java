@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.AdminDeleteAppUserDTO;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 
 public interface AdminAppUserService {
@@ -18,4 +19,6 @@ public interface AdminAppUserService {
     AdminAppUserProfileEditDTO updateUserProfile(Long id, AdminAppUserProfileEditDTO userProfile);
 
     AdminAppUserPasswordEditDTO updateUserPassword(AppUser currentUser, Long id, AdminAppUserPasswordEditDTO newUserPassword);
+
+    void deleteUser(AppUser currentUser, AdminDeleteAppUserDTO deleteUserData);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.AdminDeleteAppUserDTO;
 import pl.patrykdepka.iteventsapp.appuser.exception.AppUserNotFoundException;
 import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
 import pl.patrykdepka.iteventsapp.appuser.mapper.AdminAppUserProfileEditDTOMapper;
@@ -91,6 +92,16 @@ public class AdminAppUserServiceImpl implements AdminAppUserService {
                         }
                 );
         return new AdminAppUserPasswordEditDTO(id);
+    }
+
+    public void deleteUser(AppUser currentUser, AdminDeleteAppUserDTO deleteUserData) {
+        if (!checkIfAdminPasswordIsCorrect(currentUser, deleteUserData.getAdminPassword())) {
+            throw new IncorrectCurrentPasswordException();
+        }
+
+        if (!currentUser.getId().equals(deleteUserData.getId())) {
+            appUserRepository.deleteById(deleteUserData.getId());
+        }
     }
 
     private AppUser setUserProfileFields(AdminAppUserProfileEditDTO source, AppUser target) {

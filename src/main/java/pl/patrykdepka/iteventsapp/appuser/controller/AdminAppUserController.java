@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserPasswordEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserProfileEditDTO;
 import pl.patrykdepka.iteventsapp.appuser.dto.AdminAppUserTableDTO;
+import pl.patrykdepka.iteventsapp.appuser.dto.AdminDeleteAppUserDTO;
 import pl.patrykdepka.iteventsapp.appuser.exception.IncorrectCurrentPasswordException;
 import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.appuser.service.AdminAppUserService;
@@ -162,6 +163,29 @@ public class AdminAppUserController {
                 bindingResult.addError(new FieldError("newUserPassword", "adminPassword", messageSource.getMessage("form.field.currentPassword.error.invalidCurrentPassword.message", null, Locale.getDefault())));
                 model.addAttribute("passwordUpdated", false);
                 return "admin/forms/app-user-password-edit-form";
+            }
+        }
+    }
+
+    @GetMapping("/admin/users/{id}/settings/delete_account")
+    public String showUserDeleteForm(@PathVariable Long id, Model model) {
+        model.addAttribute("deleteUserData", new AdminDeleteAppUserDTO(id));
+        return "admin/forms/app-user-delete-form";
+    }
+
+    @DeleteMapping("/admin/users/{id}")
+    public String deleteUser(@PathVariable Long id,
+                             @Valid @ModelAttribute(name = "deleteUserData") AdminDeleteAppUserDTO deleteUserData,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/forms/app-user-delete-form";
+        } else {
+            try {
+                adminAppUserService.deleteUser(currentUserFacade.getCurrentUser(), deleteUserData);
+                return "redirect:/admin/users";
+            } catch (IncorrectCurrentPasswordException e) {
+                bindingResult.addError(new FieldError("deleteUserData", "adminPassword", messageSource.getMessage("form.field.currentPassword.error.invalidCurrentPassword.message", null, Locale.getDefault())));
+                return "admin/forms/app-user-delete-form";
             }
         }
     }
