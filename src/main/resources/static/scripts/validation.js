@@ -57,6 +57,13 @@ function validateAdminUserPasswordEditForm() {
     return isNotAdminPasswordError && isNotNewPasswordError && isNotConfirmNewPasswordError;
 }
 
+function validateAdminUserDeleteForm() {
+    const adminPasswordValue = document.adminUserDeleteForm.adminPassword.value;
+    const isNotAdminPasswordError = checkIfNotEmpty('adminPassword', adminPasswordValue);
+
+    return isNotAdminPasswordError;
+}
+
 function checkIfNotEmpty(fieldName, fieldValue) {
     if (!fieldValue) {
         document.getElementById(`${fieldName}`).className='form-control is-invalid';

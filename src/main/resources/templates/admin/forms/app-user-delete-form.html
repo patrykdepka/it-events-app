@@ -25,7 +25,7 @@
             </ul>
         </div>
         <div class="col-md-9">
-            <form id="adminUserDeleteForm" name="adminUserDeleteForm" class="custom-form" method="post" th:method="delete" action="#" th:action="@{'/admin/users/' + ${deleteUserData.id}}" th:object="${deleteUserData}">
+            <form id="adminUserDeleteForm" name="adminUserDeleteForm" class="custom-form" onsubmit="return validateAdminUserDeleteForm();" method="post" th:method="delete" action="#" th:action="@{'/admin/users/' + ${deleteUserData.id}}" th:object="${deleteUserData}">
                 <div class="form-heading">
                     <h2>Usuwanie konta użytkownika</h2>
                     <span>Wprowadź swoje hasło poniżej</span>
@@ -36,8 +36,8 @@
                            id="adminPassword" name="adminPassword"
                            class="form-control" th:class="${#fields.hasErrors('adminPassword')} == FALSE ? 'form-control' : 'form-control is-invalid'"
                            placeholder="Hasło administratora"
-                           th:field="*{adminPassword}"
-                           required>
+                           th:field="*{adminPassword}">
+                    <div id="adminPasswordErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.adminPassword.error.notNull.message}">Błędy związane z hasłem</div>
                     <div class="error-message" th:errors="*{adminPassword}">Błędy związane z hasłem</div>
                 </div>
                 <div class="d-grid gap-2 col-5 mx-auto" style="margin: 8px 0 8px 0;">
@@ -49,5 +49,6 @@
 </div>
 
 <th:block th:replace="fragments :: scripts"></th:block>
+<script type="text/javascript" src="../../../static/scripts/validation.js" th:src="@{/scripts/validation.js}"></script>
 </body>
 </html>
