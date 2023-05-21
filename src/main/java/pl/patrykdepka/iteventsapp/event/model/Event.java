@@ -5,6 +5,7 @@ import lombok.Setter;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.event.enumeration.AdmissionType;
 import pl.patrykdepka.iteventsapp.event.enumeration.EventType;
+import pl.patrykdepka.iteventsapp.eventimage.model.EventImage;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +18,13 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "event_event_image",
+            joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "event_image_id", referencedColumnName = "id")
+    )
+    private EventImage eventImage;
     @Enumerated(EnumType.STRING)
     private EventType eventType;
     private LocalDateTime dateTime;

@@ -13,6 +13,7 @@ import pl.patrykdepka.iteventsapp.event.mapper.EventCardDTOMapper;
 import pl.patrykdepka.iteventsapp.event.mapper.EventDTOMapper;
 import pl.patrykdepka.iteventsapp.event.model.Event;
 import pl.patrykdepka.iteventsapp.event.repository.EventRepository;
+import pl.patrykdepka.iteventsapp.eventimage.service.EventImageService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,14 +23,17 @@ import java.util.List;
 @Service
 public class OrganizerEventServiceImpl implements OrganizerEventService {
     private final EventRepository eventRepository;
+    private final EventImageService eventImageService;
 
-    public OrganizerEventServiceImpl(EventRepository eventRepository) {
+    public OrganizerEventServiceImpl(EventRepository eventRepository, EventImageService eventImageService) {
         this.eventRepository = eventRepository;
+        this.eventImageService = eventImageService;
     }
 
     public EventDTO createEvent(AppUser currentUser, CreateEventDTO newEventData) {
         Event event = new Event();
         event.setName(newEventData.getName());
+        event.setEventImage(eventImageService.createDefaultEventImage());
         event.setEventType(newEventData.getEventType());
         event.setDateTime(LocalDateTime.parse(newEventData.getDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         event.setLanguage(newEventData.getLanguage());
