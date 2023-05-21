@@ -10,6 +10,7 @@ import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.event.dto.CityDTO;
 import pl.patrykdepka.iteventsapp.event.dto.CreateEventDTO;
 import pl.patrykdepka.iteventsapp.event.dto.EventDTO;
+import pl.patrykdepka.iteventsapp.event.dto.EventEditDTO;
 import pl.patrykdepka.iteventsapp.event.exception.CityNotFoundException;
 import pl.patrykdepka.iteventsapp.event.service.OrganizerEventService;
 
@@ -62,6 +63,22 @@ public class OrganizerEventController {
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "dateTime"));
         model.addAttribute("events", organizerEventService.findOrganizerEventsByCity(currentUserFacade.getCurrentUser(), city, pageRequest));
         return "organizer/events";
+    }
+
+    @GetMapping("/organizer/events/{id}/edit")
+    public String showEditEventForm(@PathVariable Long id, Model model) {
+        model.addAttribute("eventEditData", organizerEventService.findEventToEdit(currentUserFacade.getCurrentUser(), id));
+        return "organizer/forms/event-edit-form";
+    }
+
+    @PatchMapping("/organizer/events")
+    public String updateEvent(@Valid @ModelAttribute("eventEditData") EventEditDTO eventEditData, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "organizer/forms/event-edit-form";
+        } else {
+            organizerEventService.updateEvent(currentUserFacade.getCurrentUser(), eventEditData);
+            return "redirect:/events/" + eventEditData.getId();
+        }
     }
 
     private String getCity(List<CityDTO> cities, String city) {

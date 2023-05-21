@@ -2,12 +2,15 @@ package pl.patrykdepka.iteventsapp.eventimage.service;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import pl.patrykdepka.iteventsapp.event.model.Event;
 import pl.patrykdepka.iteventsapp.eventimage.exception.DefaultEventImageNotFoundException;
 import pl.patrykdepka.iteventsapp.eventimage.model.EventImage;
 import pl.patrykdepka.iteventsapp.eventimage.repository.EventImageRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 @Service
 public class EventImageServiceImpl implements EventImageService {
@@ -27,6 +30,21 @@ public class EventImageServiceImpl implements EventImageService {
             return eventImageRepository.save(eventImage);
         } catch (IOException e) {
             throw new DefaultEventImageNotFoundException("File " + resource.getPath() + " not found");
+        }
+    }
+
+    public Optional<EventImage> updateEventImage(Event event, MultipartFile newEventImage) {
+        EventImage currentEventImage = event.getEventImage();
+        try (InputStream is = newEventImage.getInputStream()) {
+            if (currentEventImage.getFileData() != is.readAllBytes()) {
+                currentEventImage.setFileName(newEventImage.getOriginalFilename());
+                currentEventImage.setFileType(newEventImage.getContentType());
+                currentEventImage.setFileData(newEventImage.getBytes());
+                return Optional.of(currentEventImage);
+            }
+            return Optional.empty();
+        } catch (IOException e) {
+            throw new DefaultEventImageNotFoundException("File not found");
         }
     }
 }

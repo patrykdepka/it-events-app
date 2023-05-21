@@ -3,14 +3,15 @@ package pl.patrykdepka.iteventsapp.event.service;
 import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
-import pl.patrykdepka.iteventsapp.event.dto.CityDTO;
-import pl.patrykdepka.iteventsapp.event.dto.CreateEventDTO;
-import pl.patrykdepka.iteventsapp.event.dto.EventCardDTO;
-import pl.patrykdepka.iteventsapp.event.dto.EventDTO;
+import pl.patrykdepka.iteventsapp.event.dto.*;
+import pl.patrykdepka.iteventsapp.event.exception.EventNotFoundException;
 import pl.patrykdepka.iteventsapp.event.mapper.EventCardDTOMapper;
 import pl.patrykdepka.iteventsapp.event.mapper.EventDTOMapper;
+import pl.patrykdepka.iteventsapp.event.mapper.EventEditDTOMapper;
 import pl.patrykdepka.iteventsapp.event.model.Event;
 import pl.patrykdepka.iteventsapp.event.repository.EventRepository;
 import pl.patrykdepka.iteventsapp.eventimage.service.EventImageService;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrganizerEventServiceImpl implements OrganizerEventService {
@@ -66,10 +68,76 @@ public class OrganizerEventServiceImpl implements OrganizerEventService {
         return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findOrganizerEventsByCity(currentUser, city, pageable));
     }
 
+    public EventEditDTO findEventToEdit(AppUser currentUser, Long id) {
+        return EventEditDTOMapper.mapToEventEditDTO(returnEventIfCurrentUserIsOrganizer(currentUser, id));
+    }
+
+    @Transactional
+    public void updateEvent(AppUser currentUser, EventEditDTO editEventDTO) {
+        eventRepository
+                .findById(editEventDTO.getId())
+                .ifPresentOrElse(
+                        event -> {
+                            setEventFields(editEventDTO, event);
+                        },
+                        () -> {
+                            throw new EventNotFoundException("Event with ID " + editEventDTO.getId() + " not found");
+                        });
+    }
+
     private String getCityNameWithoutPlCharacters(String city) {
         city = city.toLowerCase();
         city = city.replace("\\s", "-");
         city = StringUtils.stripAccents(city);
         return city;
+    }
+
+    private Event returnEventIfCurrentUserIsOrganizer(AppUser currentUser, Long id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+            if (!currentUser.equals(event.getOrganizer())) {
+                throw new AccessDeniedException("Access is denied");
+            }
+
+            return event;
+        }
+
+        throw new EventNotFoundException(String.format("Event with ID %s not found", id));
+    }
+
+    private Event setEventFields(EventEditDTO source, Event target) {
+        if (source.getName() != null && !source.getName().equals(target.getName())) {
+            target.setName(source.getName());
+        }
+        if (!source.getEventImage().isEmpty()) {
+            eventImageService.updateEventImage(target, source.getEventImage()).ifPresent(target::setEventImage);
+        }
+        if (source.getDateTime() != null && !source.getDateTime().equals(target.getDateTime().toString())) {
+            target.setDateTime(LocalDateTime.parse(source.getDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        }
+        if (source.getEventType() != null && source.getEventType() != target.getEventType()) {
+            target.setEventType(source.getEventType());
+        }
+        if (source.getLanguage() != null && !source.getLanguage().equals(target.getLanguage())) {
+            target.setLanguage(source.getLanguage());
+        }
+        if (source.getAdmission() != null && source.getAdmission() != target.getAdmission()) {
+            target.setAdmission(source.getAdmission());
+        }
+        if (source.getCity() != null && !source.getCity().equals(target.getCity())) {
+            target.setCity(source.getCity());
+        }
+        if (source.getLocation() != null && !source.getLocation().equals(target.getLocation())) {
+            target.setLocation(source.getLocation());
+        }
+        if (source.getAddress() != null && !source.getAddress().equals(target.getAddress())) {
+            target.setAddress(source.getAddress());
+        }
+        if (source.getDescription() != null && !source.getDescription().equals(target.getDescription())) {
+            target.setDescription(source.getDescription());
+        }
+
+        return target;
     }
 }
