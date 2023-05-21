@@ -14,8 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
-import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_ADMIN;
-import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_USER;
+import static pl.patrykdepka.iteventsapp.appuser.model.Role.*;
 
 @Configuration
 public class SecurityConfig {
@@ -40,6 +39,7 @@ public class SecurityConfig {
                 .mvcMatchers("/events/cities/*").permitAll()
                 .mvcMatchers("/archive/events").permitAll()
                 .mvcMatchers("/archive/events/cities/*").permitAll()
+                .mvcMatchers("/organizer/create_event").hasRole(ROLE_ORGANIZER.getRole())
                 .anyRequest().authenticated());
         http.formLogin(login -> login
                 .loginPage("/login").permitAll()
