@@ -36,6 +36,8 @@ public class SecurityConfig {
                 .mvcMatchers("/register", "/confirmation").permitAll()
                 .mvcMatchers("/users").hasRole(ROLE_USER.getRole())
                 .mvcMatchers("/admin/**").hasRole(ROLE_ADMIN.getRole())
+                .mvcMatchers("/events").permitAll()
+                .mvcMatchers("/archive/events").permitAll()
                 .anyRequest().authenticated());
         http.formLogin(login -> login
                 .loginPage("/login").permitAll()

@@ -2,6 +2,7 @@ package pl.patrykdepka.iteventsapp.appuser.model;
 
 public enum Role {
     ROLE_ADMIN("ADMIN", "Administrator"),
+    ROLE_ORGANIZER("ORGANIZER", "Organizator"),
     ROLE_USER("USER", "Użytkownik");
 
     private String role;

@@ -9,8 +9,39 @@
 </head>
 <body>
 <nav th:replace="fragments :: navbar"></nav>
-<div class="container" style="text-align: center;">
-    <h1>Strona główna</h1>
+<div class="container">
+    <div>
+        <div class="event-list-header">
+            <h2>
+                Najbliższe wydarzenia:
+                <span style="color: #f39c12;" th:text="${cityName}">Rzeszów</span>
+                <span style="color: #f39c12;" th:text="${'(' + events.size + ')'}">(10)</span>
+            </h2>
+        </div>
+        <div class="event-list">
+            <th:block th:if="${events.size > 0}" th:each="event: ${events}">
+                <a style="color: gray; text-decoration: none;" th:href="@{'/events/' + ${event.id}}">
+                    <div class="row align-items-center event-card" style="width: 100%">
+                        <div class="col-sm-2">
+                            <span class="event-date" th:text="${event.date + ' | ' + event.dayOfWeek}">03.01 | wt.</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="event-name" th:text="${event.name}">Nazwa wydarzenia</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <span class="" th:text="${event.city}">Rzeszów</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <span th:text="${event.eventType}">Spotkanie</span>
+                        </div>
+                        <div class="col-sm-2">
+                            <span th:text="${event.admission}">Bezpłatny</span>
+                        </div>
+                    </div>
+                </a>
+            </th:block>
+        </div>
+    </div>
 </div>
 
 <th:block th:replace="fragments :: scripts"></th:block>

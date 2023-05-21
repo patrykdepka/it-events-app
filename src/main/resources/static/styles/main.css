@@ -184,3 +184,58 @@
     font-weight: bold;
     background-color: #f39c12;
 }
+
+.event-list-header {
+    margin: 24px 0 16px 0;
+}
+
+.event-list {
+    padding: 0 8px 0 8px;
+    border-top: 8px solid #f8f9f9;
+}
+
+.event-card {
+    font-size: 1.25rem;
+    margin: 16px 0 16px 0;
+    padding: 16px 0 16px 0;
+    height: 100px;
+    border: 1px solid #f39c12;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 3px 0 #999999;
+}
+
+.event-card:hover {
+    box-shadow: 0 0 0 3px #f39c12;
+}
+
+.event-date {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.event-name {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.event-container {
+    border: 1px solid #f39c12;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 3px 0 #999999;
+}
+
+.event-heading {
+    margin-bottom: 32px;
+}
+
+.organizer-card {
+    margin-left: 15px;
+    margin-right: 15px;
+    border: 1px solid #f39c12;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 3px 0 #999999;
+}
+
+.organizer-card:hover {
+    box-shadow: 0 0 0 3px #f39c12;
+}
