@@ -9,6 +9,8 @@ import pl.patrykdepka.iteventsapp.eventimage.model.EventImage;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,4 +40,21 @@ public class Event {
     @JoinColumn(name = "organizer_id")
     private AppUser organizer;
     private String description;
+    @OneToMany
+    @JoinTable(
+            name = "event_app_user",
+            joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "app_user_id", referencedColumnName = "id")
+    )
+    private List<AppUser> participants = new ArrayList<>();
+
+    public boolean addParticipant(AppUser user) {
+        participants.add(user);
+        return true;
+    }
+
+    public boolean removeParticipant(AppUser user) {
+        participants.remove(user);
+        return true;
+    }
 }

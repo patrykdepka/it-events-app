@@ -2,6 +2,9 @@ package pl.patrykdepka.iteventsapp.event.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +26,11 @@ public class EventDTO {
     private String organizerImageData;
     private String organizerName;
     private String description;
+    private List<AppUser> participants;
+
+    public boolean checkIfCurrentUserIsParticipant(AppUser user) {
+        return participants.contains(user);
+    }
 
     public static class EventDTOBuilder {
         private Long id;
@@ -42,6 +50,7 @@ public class EventDTO {
         private String organizerImageData;
         private String organizerName;
         private String description;
+        private List<AppUser> participants;
 
         public EventDTOBuilder id(Long id) {
             this.id = id;
@@ -128,6 +137,11 @@ public class EventDTO {
             return this;
         }
 
+        public EventDTOBuilder participants(List<AppUser> participants) {
+            this.participants = participants;
+            return this;
+        }
+
         public EventDTO build() {
             EventDTO event = new EventDTO();
             event.setId(id);
@@ -147,6 +161,7 @@ public class EventDTO {
             event.setOrganizerImageData(organizerImageData);
             event.setOrganizerName(organizerName);
             event.setDescription(description);
+            event.setParticipants(participants);
             return event;
         }
     }

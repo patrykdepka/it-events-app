@@ -5,9 +5,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.event.dto.CityDTO;
+import pl.patrykdepka.iteventsapp.event.dto.EventDTO;
 import pl.patrykdepka.iteventsapp.event.exception.CityNotFoundException;
 import pl.patrykdepka.iteventsapp.event.service.EventService;
 
@@ -17,9 +20,11 @@ import java.util.List;
 @Controller
 public class EventController {
     private final EventService eventService;
+    private final CurrentUserFacade currentUserFacade;
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, CurrentUserFacade currentUserFacade) {
         this.eventService = eventService;
+        this.currentUserFacade = currentUserFacade;
     }
 
     @GetMapping("/")
@@ -30,7 +35,9 @@ public class EventController {
 
     @GetMapping("/events/{id}")
     public String getEvent(@PathVariable Long id, Model model) {
-        model.addAttribute("event", eventService.findEvent(id));
+        EventDTO event = eventService.findEvent(id);
+        model.addAttribute("event", event);
+        model.addAttribute("currentUserIsParticipant", eventService.checkIfCurrentUserIsParticipant(currentUserFacade.getCurrentUser(), event));
         return "event";
     }
 
@@ -84,6 +91,18 @@ public class EventController {
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "dateTime"));
         model.addAttribute("events", eventService.findPastEventsByCity(city, LocalDateTime.now(), pageRequest));
         return "events";
+    }
+
+    @PatchMapping("/events/{id}/join")
+    public String joinEvent(@PathVariable Long id) {
+        eventService.addUserToEventParticipantsList(currentUserFacade.getCurrentUser(), id);
+        return "redirect:/events/" + id;
+    }
+
+    @PatchMapping("/events/{id}/leave")
+    public String leaveEvent(@PathVariable Long id) {
+        eventService.removeUserFromEventParticipantsList(currentUserFacade.getCurrentUser(), id);
+        return "redirect:/events/" + id;
     }
 
     private String getCity(List<CityDTO> cities, String city) {

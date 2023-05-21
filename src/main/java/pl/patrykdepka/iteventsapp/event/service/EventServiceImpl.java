@@ -4,6 +4,8 @@ import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 import pl.patrykdepka.iteventsapp.event.dto.CityDTO;
 import pl.patrykdepka.iteventsapp.event.dto.EventCardDTO;
 import pl.patrykdepka.iteventsapp.event.dto.EventDTO;
@@ -61,6 +63,26 @@ public class EventServiceImpl implements EventService {
 
     public Page<EventCardDTO> findPastEventsByCity(String city, LocalDateTime currentDateTime, Pageable pageable) {
         return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findPastEventsByCity(city, currentDateTime, pageable));
+    }
+
+    @Transactional
+    public void addUserToEventParticipantsList(AppUser currentUser, Long id) {
+        eventRepository
+                .findById(id)
+                .map(event -> event.addParticipant(currentUser))
+                .orElseThrow(() -> new EventNotFoundException("Event with ID " + id + " not found"));
+    }
+
+    @Transactional
+    public void removeUserFromEventParticipantsList(AppUser currentUser, Long id) {
+        eventRepository
+                .findById(id)
+                .map(event -> event.removeParticipant(currentUser))
+                .orElseThrow(() -> new EventNotFoundException("Event with ID " + id + " not found"));
+    }
+
+    public boolean checkIfCurrentUserIsParticipant(AppUser currentUser, EventDTO event) {
+        return event.checkIfCurrentUserIsParticipant(currentUser);
     }
 
     private String getCityNameWithoutPlCharacters(String city) {

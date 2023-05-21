@@ -21,4 +21,6 @@
     <include file="changelog/2023-05-21/0014_create_table_event_image.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-21/0015_create_table_event_event_image.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-21/0016_event_images_data.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-21/0017_create_table_event_app_user.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/2023-05-21/0018_event_app_user_data.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

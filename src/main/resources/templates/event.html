@@ -68,6 +68,16 @@
             <span class="col-sm-10" style="text-align: left;" th:text="${event.description}">Spotkanie rzeszowskiej grupy pasjonatów języka Java.</span>
         </div>
     </div>
+    <div sec:authorize="isAuthenticated() && hasRole('USER')" th:if="${currentUserIsParticipant == false}">
+        <form method="post" th:method="patch" action="#" th:action="@{'/events/' + ${event.id} + '/join'}">
+            <button class="btn form-button" type="submit" th:text="'Wezmę udział'">Wezmę udział</button>
+        </form>
+    </div>
+    <div sec:authorize="isAuthenticated() && hasRole('USER')" th:if="${currentUserIsParticipant == true}">
+        <form method="post" th:method="patch" action="#" th:action="@{'/events/' + ${event.id} + '/leave'}">
+            <button class="btn form-button" type="submit" th:text="'Opuść wydarzenie'">Opuść wydarzenie</button>
+        </form>
+    </div>
     <div sec:authorize="isAuthenticated() && hasRole('ORGANIZER')">
         <a class="btn form-button" href="#" th:href="@{'/organizer/events/' + ${event.id} + '/edit'}">Zarządzaj wydarzeniem</a>
     </div>
