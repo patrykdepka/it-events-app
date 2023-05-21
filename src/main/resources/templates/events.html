@@ -32,6 +32,7 @@
             <h2>
                 <span th:if="${pathName.equals('/events')}">Nadchodzące wydarzenia:</span>
                 <span th:if="${pathName.equals('/archive/events')}">Minione wydarzenia:</span>
+                <span th:if="${pathName.equals('/events/my_events')}">Twoje wydarzenia:</span>
                 <span style="color: #f39c12;" th:text="${cityName}">Rzeszów</span>
                 <span style="color: #f39c12;" th:text="'(' + ${events.totalElements} + ')'">(10)</span>
             </h2>
@@ -114,10 +115,17 @@
             .replace(/\u0020/g, '-')
             .toLowerCase();
 
+        if (window.location.pathname.includes('/events/my_events')) {
+            window.location.href = window.location.origin + '/events/my_events/cities/' + city;
+            return;
+        }
         if (window.location.pathname.includes('/archive/events')) {
             window.location.href = window.location.origin + '/archive/events/cities/' + city;
-        } else {
+            return;
+        }
+        if (window.location.pathname.includes('/events')) {
             window.location.href = window.location.origin + '/events/cities/' + city;
+            return;
         }
     }
 </script>

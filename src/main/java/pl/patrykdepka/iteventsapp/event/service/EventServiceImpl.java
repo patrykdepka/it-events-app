@@ -85,6 +85,14 @@ public class EventServiceImpl implements EventService {
         return event.checkIfCurrentUserIsParticipant(currentUser);
     }
 
+    public Page<EventCardDTO> findUserEvents(AppUser user, Pageable pageable) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUserEvents(user, pageable));
+    }
+
+    public Page<EventCardDTO> findUserEventsByCity(AppUser user, String city, Pageable pageable) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUserEventsByCity(user, city, pageable));
+    }
+
     private String getCityNameWithoutPlCharacters(String city) {
         city = city.toLowerCase();
         city = city.replace("\\s", "-");

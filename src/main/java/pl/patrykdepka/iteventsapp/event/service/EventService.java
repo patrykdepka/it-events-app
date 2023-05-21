@@ -31,4 +31,8 @@ public interface EventService {
     void removeUserFromEventParticipantsList(AppUser currentUser, Long id);
 
     boolean checkIfCurrentUserIsParticipant(AppUser currentUser, EventDTO event);
+
+    Page<EventCardDTO> findUserEvents(AppUser currentUser, Pageable pageable);
+
+    Page<EventCardDTO> findUserEventsByCity(AppUser currentUser, String city, Pageable pageable);
 }

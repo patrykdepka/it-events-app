@@ -105,6 +105,31 @@ public class EventController {
         return "redirect:/events/" + id;
     }
 
+    @GetMapping("/events/my_events")
+    public String getUserEvents(@RequestParam(name = "page", required = false) Integer pageNumber, Model model) {
+        model.addAttribute("pathName", "/events/my_events");
+        model.addAttribute("cities", eventService.findAllCities());
+        int page = pageNumber != null ? pageNumber : 1;
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "dateTime"));
+        model.addAttribute("events", eventService.findUserEvents(currentUserFacade.getCurrentUser(), pageRequest));
+        return "events";
+    }
+
+    @GetMapping("/events/my_events/cities/{city}")
+    public String getUserEventsByCity(@PathVariable String city,
+                                      @RequestParam(name = "page", required = false) Integer pageNumber,
+                                      Model model) {
+        model.addAttribute("pathName", "/events/my_events");
+        List<CityDTO> cities = eventService.findAllCities();
+        model.addAttribute("cities", cities);
+        city = getCity(cities, city);
+        model.addAttribute("cityName", city);
+        int page = pageNumber != null ? pageNumber : 1;
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, "dateTime"));
+        model.addAttribute("events", eventService.findUserEventsByCity(currentUserFacade.getCurrentUser(), city, pageRequest));
+        return "events";
+    }
+
     private String getCity(List<CityDTO> cities, String city) {
         for (CityDTO cityDTO : cities) {
             if (cityDTO.getNameWithoutPlCharacters().equals(city)) {
