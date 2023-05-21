@@ -19,7 +19,7 @@
             </ul>
         </div>
         <div class="col-md-9">
-            <form id="eventEditForm" name="eventEditForm" class="custom-form" enctype="multipart/form-data" method="post" th:method="patch" action="#" th:action="@{'/organizer/events'}" th:object="${eventEditData}">
+            <form id="eventEditForm" name="eventEditForm" class="custom-form" enctype="multipart/form-data" onsubmit="return validateEventEditForm();" method="post" th:method="patch" action="#" th:action="@{'/organizer/events'}" th:object="${eventEditData}">
                 <div class="form-heading">
                     <h2>Zaktualizuj wydarzenie</h2>
                     <span>Wprowadź informacje o wydarzeniu poniżej</span>
@@ -31,8 +31,8 @@
                            id="name" name="name"
                            class="form-control" th:class="${#fields.hasErrors('name')} == FALSE ? 'form-control' : 'form-control is-invalid'"
                            placeholder="Nazwa"
-                           th:field="*{name}"
-                           required>
+                           th:field="*{name}">
+                    <div id="nameErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.name.error.notEmpty.message}">Błędy związane z nazwą</div>
                     <div class="error-message" th:errors="*{name}">Błędy związane z nazwą</div>
                 </div>
                 <div class="form-group">
@@ -50,10 +50,10 @@
                     <label for="eventType" class="form-label">TYP WYDARZENIA</label>
                     <select id="eventType" name="eventType"
                             class="form-control" th:class="${#fields.hasErrors('eventType')} == FALSE ? 'form-control' : 'form-control is-invalid'"
-                            th:field="*{eventType}"
-                            required>
+                            th:field="*{eventType}">
                         <option th:each="eventType : ${T(pl.patrykdepka.iteventsapp.event.enumeration.EventType).values()}" th:value="${eventType}" th:text="${eventType.displayName}"></option>
                     </select>
+                    <div id="eventTypeErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.eventType.error.notEmpty.message}">Błędy związane z typem wydarzenia</div>
                     <div class="error-message" th:errors="*{eventType}">Błędy związane z typem wydarzenia</div>
                 </div>
                 <div class="form-group">
@@ -61,8 +61,8 @@
                     <input type="datetime-local"
                            id="dateTime" name="dateTime"
                            class="form-control" th:class="${#fields.hasErrors('dateTime')} == FALSE ? 'form-control' : 'form-control is-invalid'"
-                           th:field="*{dateTime}"
-                           required>
+                           th:field="*{dateTime}">
+                    <div id="dateTimeErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.dateTime.error.notEmpty.message}">Błędy związane z datą i godziną wydarzenia</div>
                     <div class="error-message" th:errors="*{dateTime}">Błędy związane z datą i godziną wydarzenia</div>
                 </div>
                 <div class="form-group">
@@ -71,18 +71,18 @@
                            id="language" name="language"
                            class="form-control" th:class="${#fields.hasErrors('language')} == FALSE ? 'form-control' : 'form-control is-invalid'"
                            placeholder="Język"
-                           th:field="*{language}"
-                           required>
+                           th:field="*{language}">
+                    <div id="languageErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.language.error.notEmpty.message}">Błędy związane z językiem</div>
                     <div class="error-message" th:errors="*{language}">Błędy związane z językiem</div>
                 </div>
                 <div class="form-group">
                     <label for="admission" class="form-label">WSTĘP</label>
                     <select id="admission" name="admission"
                             class="form-control" th:class="${#fields.hasErrors('admission')} == FALSE ? 'form-control' : 'form-control is-invalid'"
-                            th:field="*{admission}"
-                            required>
+                            th:field="*{admission}">
                         <option th:each="admission : ${T(pl.patrykdepka.iteventsapp.event.enumeration.AdmissionType).values()}" th:value="${admission}" th:text="${admission.displayName}"></option>
                     </select>
+                    <div id="admissionErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.admission.error.notEmpty.message}">Błędy związane z wstępem</div>
                     <div class="error-message" th:errors="*{admission}">Błędy związane z wstępem</div>
                 </div>
                 <div class="form-group">
@@ -91,8 +91,8 @@
                            id="city" name="city"
                            class="form-control" th:class="${#fields.hasErrors('city')} == FALSE ? 'form-control' : 'form-control is-invalid'"
                            placeholder="Miasto"
-                           th:field="*{city}"
-                           required>
+                           th:field="*{city}">
+                    <div id="cityErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.city.error.notEmpty.message}">Błędy związane z miastem</div>
                     <div class="error-message" th:errors="*{city}">Błędy związane z miastem</div>
                 </div>
                 <div class="form-group">
@@ -101,8 +101,8 @@
                            id="location" name="location"
                            class="form-control" th:class="${#fields.hasErrors('location')} == FALSE ? 'form-control' : 'form-control is-invalid'"
                            placeholder="Lokacja"
-                           th:field="*{location}"
-                           required>
+                           th:field="*{location}">
+                    <div id="locationErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.location.error.notEmpty.message}">Błędy związane z lokacją</div>
                     <div class="error-message" th:errors="*{location}">Błędy związane z lokacją</div>
                 </div>
                 <div class="form-group">
@@ -111,8 +111,8 @@
                            id="address" name="address"
                            class="form-control" th:class="${#fields.hasErrors('address')} == FALSE ? 'form-control' : 'form-control is-invalid'"
                            placeholder="Adres"
-                           th:field="*{address}"
-                           required>
+                           th:field="*{address}">
+                    <div id="addressErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.address.error.notEmpty.message}">Błędy związane z adresem</div>
                     <div class="error-message" th:errors="*{address}">Błędy związane z adresem</div>
                 </div>
                 <div class="form-group">
@@ -120,9 +120,9 @@
                     <textarea id="description" name="description"
                               class="form-control" th:class="${#fields.hasErrors('description')} == FALSE ? 'form-control' : 'form-control is-invalid'"
                               placeholder="Opis"
-                              th:field="*{description}"
-                              required>
+                              th:field="*{description}">
                     </textarea>
+                    <div id="descriptionErrorMessage" class="error-message" style="display: none;" th:text="#{form.field.description.error.notEmpty.message}">Błędy związane z opisem</div>
                     <div class="error-message" th:errors="*{description}">Błędy związane z opisem</div>
                 </div>
                 <div class="d-grid gap-2 col-5 mx-auto" style="margin: 8px 0 8px 0;">
@@ -134,5 +134,6 @@
 </div>
 
 <th:block th:replace="fragments :: scripts"></th:block>
+<script type="text/javascript" src="../../../static/scripts/validation.js" th:src="@{/scripts/validation.js}"></script>
 </body>
 </html>
