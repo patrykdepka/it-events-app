@@ -81,6 +81,23 @@ public class OrganizerEventController {
         }
     }
 
+    @GetMapping("/organizer/events/{id}/participants")
+    public String getEventParticipants(@RequestParam(name = "page", required = false) Integer pageNumber,
+                                       @PathVariable Long id,
+                                       Model model) {
+        int page = pageNumber != null ? pageNumber : 1;
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.ASC, "lastName"));
+        model.addAttribute("participants", organizerEventService.findEventParticipants(currentUserFacade.getCurrentUser(), id, pageRequest));
+        model.addAttribute("eventId", id);
+        return "organizer/participants";
+    }
+
+    @GetMapping("/organizer/events/{eventId}/participants/{participantId}/remove")
+    public String removeParticipant(@PathVariable Long eventId, @PathVariable Long participantId) {
+        organizerEventService.removeParticipant(currentUserFacade.getCurrentUser(), eventId, participantId);
+        return "redirect:/organizer/events/" + eventId + "/participants";
+    }
+
     private String getCity(List<CityDTO> cities, String city) {
         for (CityDTO cityDTO : cities) {
             if (cityDTO.getNameWithoutPlCharacters().equals(city)) {

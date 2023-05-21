@@ -12,6 +12,7 @@ import pl.patrykdepka.iteventsapp.event.exception.EventNotFoundException;
 import pl.patrykdepka.iteventsapp.event.mapper.EventCardDTOMapper;
 import pl.patrykdepka.iteventsapp.event.mapper.EventDTOMapper;
 import pl.patrykdepka.iteventsapp.event.mapper.EventEditDTOMapper;
+import pl.patrykdepka.iteventsapp.event.mapper.ParticipantDTOMapper;
 import pl.patrykdepka.iteventsapp.event.model.Event;
 import pl.patrykdepka.iteventsapp.event.repository.EventRepository;
 import pl.patrykdepka.iteventsapp.eventimage.service.EventImageService;
@@ -83,6 +84,18 @@ public class OrganizerEventServiceImpl implements OrganizerEventService {
                         () -> {
                             throw new EventNotFoundException("Event with ID " + editEventDTO.getId() + " not found");
                         });
+    }
+
+    public Page<ParticipantDTO> findEventParticipants(AppUser currentUser, Long id, Pageable pageable) {
+        Event event = returnEventIfCurrentUserIsOrganizer(currentUser, id);
+        return ParticipantDTOMapper.mapToParticipantDTOs(event.getParticipants(), pageable);
+    }
+
+    @Transactional
+    public void removeParticipant(AppUser currentUser, Long eventId, Long participantId) {
+        Event event = returnEventIfCurrentUserIsOrganizer(currentUser, eventId);
+        AppUser user = event.getParticipants().stream().filter(participant -> participant.getId() == participantId).findFirst().get();
+        event.removeParticipant(user);
     }
 
     private String getCityNameWithoutPlCharacters(String city) {

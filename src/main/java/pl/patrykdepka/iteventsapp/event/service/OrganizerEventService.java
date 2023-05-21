@@ -20,4 +20,8 @@ public interface OrganizerEventService {
     EventEditDTO findEventToEdit(AppUser currentUser, Long id);
 
     void updateEvent(AppUser currentUser, EventEditDTO EventEditDTO);
+
+    Page<ParticipantDTO> findEventParticipants(AppUser currentUser, Long id, Pageable pageable);
+
+    void removeParticipant(AppUser currentUser, Long eventId, Long participantId);
 }
