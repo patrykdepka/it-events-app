@@ -29,4 +29,13 @@ public class AppUserPasswordEditDTO {
     @NotEmpty(message = "{form.field.confirmNewPassword.error.notEmpty.message}")
     @Size(min = 5, max = 100, message = "{form.field.confirmNewPassword.error.size.message}")
     private String confirmNewPassword;
+
+    public AppUserPasswordEditDTO() {
+    }
+
+    public AppUserPasswordEditDTO(String currentPassword, String newPassword, String confirmNewPassword) {
+        this.currentPassword = currentPassword;
+        this.newPassword = newPassword;
+        this.confirmNewPassword = confirmNewPassword;
+    }
 }

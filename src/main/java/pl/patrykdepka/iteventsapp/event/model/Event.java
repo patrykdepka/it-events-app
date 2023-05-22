@@ -57,4 +57,107 @@ public class Event {
         participants.remove(user);
         return true;
     }
+
+    public static EventBuilder builder() {
+        return new EventBuilder();
+    }
+
+    public static class EventBuilder {
+        private Long id;
+        private String name;
+        private EventImage eventImage;
+        private EventType eventType;
+        private LocalDateTime dateTime;
+        private String language;
+        private AdmissionType admission;
+        private String city;
+        private String location;
+        private String address;
+        private AppUser organizer;
+        private String description;
+        private List<AppUser> participants;
+
+        public EventBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public EventBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public EventBuilder eventImage(EventImage eventImage) {
+            this.eventImage = eventImage;
+            return this;
+        }
+
+        public EventBuilder eventType(EventType eventType) {
+            this.eventType = eventType;
+            return this;
+        }
+
+        public EventBuilder dateTime(LocalDateTime dateTime) {
+            this.dateTime = dateTime;
+            return this;
+        }
+
+        public EventBuilder language(String language) {
+            this.language = language;
+            return this;
+        }
+
+        public EventBuilder admission(AdmissionType admission) {
+            this.admission = admission;
+            return this;
+        }
+
+        public EventBuilder city(String city) {
+            this.city = city;
+            return this;
+        }
+
+        public EventBuilder location(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public EventBuilder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public EventBuilder organizer(AppUser organizer) {
+            this.organizer = organizer;
+            return this;
+        }
+
+        public EventBuilder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public EventBuilder participants(List<AppUser> participants) {
+            this.participants = participants;
+            return this;
+        }
+
+        public Event build() {
+            Event event = new Event();
+            event.setId(id);
+            event.setName(name);
+            event.setEventImage(eventImage);
+            event.setEventType(eventType);
+            event.setDateTime(dateTime);
+            event.setLanguage(language);
+            event.setAdmission(admission);
+            event.setCity(city);
+            event.setLocation(location);
+            event.setAddress(address);
+            event.setOrganizer(organizer);
+            event.setDescription(description);
+            event.setParticipants(participants);
+            return event;
+        }
+    }
 }

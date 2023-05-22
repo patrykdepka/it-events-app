@@ -41,4 +41,58 @@ public class AppUserRegistrationDTO {
     @NotEmpty(message = "{form.field.confirmPassword.error.notEmpty.message}")
     @Size(min = 5, max = 100, message = "{form.field.confirmPassword.error.size.message}")
     private String confirmPassword;
+
+    public static AppUserRegistrationDTOBuilder builder() {
+        return new AppUserRegistrationDTOBuilder();
+    }
+
+    public static class AppUserRegistrationDTOBuilder {
+        private String firstName;
+        private String lastName;
+        private String dateOfBirth;
+        private String email;
+        private String password;
+        private String confirmPassword;
+
+        public AppUserRegistrationDTOBuilder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public AppUserRegistrationDTOBuilder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public AppUserRegistrationDTOBuilder dateOfBirth(String dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public AppUserRegistrationDTOBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public AppUserRegistrationDTOBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public AppUserRegistrationDTOBuilder confirmPassword(String confirmPassword) {
+            this.confirmPassword = confirmPassword;
+            return this;
+        }
+
+        public AppUserRegistrationDTO build() {
+            AppUserRegistrationDTO newUserData = new AppUserRegistrationDTO();
+            newUserData.setFirstName(firstName);
+            newUserData.setLastName(lastName);
+            newUserData.setDateOfBirth(dateOfBirth);
+            newUserData.setEmail(email);
+            newUserData.setPassword(password);
+            newUserData.setConfirmPassword(confirmPassword);
+            return newUserData;
+        }
+    }
 }

@@ -34,4 +34,11 @@ public class AdminAppUserPasswordEditDTO {
     public AdminAppUserPasswordEditDTO(Long id) {
         this.id = id;
     }
+
+    public AdminAppUserPasswordEditDTO(Long id, String adminPassword, String newPassword, String confirmNewPassword) {
+        this.id = id;
+        this.adminPassword = adminPassword;
+        this.newPassword = newPassword;
+        this.confirmNewPassword = confirmNewPassword;
+    }
 }
