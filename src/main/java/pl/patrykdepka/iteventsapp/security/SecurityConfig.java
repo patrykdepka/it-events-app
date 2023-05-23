@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -50,6 +51,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/login?logout").permitAll()
         );
         http.rememberMe().tokenRepository(persistentTokenRepository());
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
         return http.build();
     }
 
@@ -70,5 +72,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new ItEventsAccessDeniedHandler();
     }
 }
