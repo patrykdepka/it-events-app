@@ -52,7 +52,7 @@ There are three user roles (ADMIN, ORGANIZER, USER).
 * Mockito
 * AssertJ
 ## How to run:
-There are two profiles - dev and prod. The dev profile uses the H2 database and the prod profile uses the MySQL database. The dev profile also contains test data. Select one of the two Spring profiles (dev or prod) by setting the SPRING_PROFILES_ACTIVE environment variable or otherwise. You must set these additional environment variables before running:
+There are two profiles - dev and prod. The dev profile uses the H2 database and the prod profile uses the MySQL database. The dev profile also contains test data. The prod profile contains only one user with admin role. Select one of the two Spring profiles (dev or prod) by setting the SPRING_PROFILES_ACTIVE environment variable or otherwise. You must set these additional environment variables before running:
 - for dev profile:
 ```
 DB_NAME
