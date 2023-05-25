@@ -6,3 +6,5 @@ spring:
     url: jdbc:h2:mem:${DB_NAME}
   jpa:
     show-sql: true
+  liquibase:
+    contexts: dev
