@@ -3,6 +3,7 @@ package pl.patrykdepka.iteventsapp.event.model;
 import lombok.Getter;
 import lombok.Setter;
 import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+import pl.patrykdepka.iteventsapp.core.BaseEntity;
 import pl.patrykdepka.iteventsapp.event.enumeration.AdmissionType;
 import pl.patrykdepka.iteventsapp.event.enumeration.EventType;
 import pl.patrykdepka.iteventsapp.eventimage.model.EventImage;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Event {
+public class Event extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

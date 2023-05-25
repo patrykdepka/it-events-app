@@ -2,6 +2,7 @@ package pl.patrykdepka.iteventsapp.eventimage.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.patrykdepka.iteventsapp.core.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-public class EventImage {
+public class EventImage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

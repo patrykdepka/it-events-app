@@ -17,7 +17,6 @@
     <include file="changelog/2023-05-21/0011_add_organizer_role_to_user.sql" relativeToChangelogFile="true" context="dev"/>
     <include file="changelog/2023-05-21/0012_create_table_event.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-21/0013_events_data.sql" relativeToChangelogFile="true" context="dev"/>
-
     <include file="changelog/2023-05-21/0014_create_table_event_image.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-21/0015_create_table_event_event_image.xml" relativeToChangelogFile="true"/>
     <include file="changelog/2023-05-21/0016_event_images_data.sql" relativeToChangelogFile="true" context="dev"/>
