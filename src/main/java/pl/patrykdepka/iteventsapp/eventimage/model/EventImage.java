@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.patrykdepka.iteventsapp.core.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -18,6 +15,7 @@ public class EventImage extends BaseEntity {
     private Long id;
     private String fileName;
     private String fileType;
+    @Column(columnDefinition = "BLOB")
     private byte[] fileData;
 
     public static EventImageBuilder builder() {
