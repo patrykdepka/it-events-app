@@ -37,21 +37,21 @@ public class AdminAppUserServiceImpl implements AdminAppUserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Page<AdminAppUserTableDTO> findAllUsers(Pageable pageable) {
-        return AdminAppUserTableDTOMapper.mapToAdminAppUserTableDTOs(appUserRepository.findAll(pageable));
+    public Page<AdminAppUserTableDTO> findAllUsers(Pageable page) {
+        return AdminAppUserTableDTOMapper.mapToAdminAppUserTableDTOs(appUserRepository.findAll(page));
     }
 
-    public Page<AdminAppUserTableDTO> findUsersBySearch(String searchQuery, Pageable pageable) {
+    public Page<AdminAppUserTableDTO> findUsersBySearch(String searchQuery, Pageable page) {
         searchQuery = searchQuery.toLowerCase();
         String[] searchWords = searchQuery.split(" ");
 
         if (searchWords.length == 1 && !"".equals(searchWords[0])) {
             return AdminAppUserTableDTOMapper
-                    .mapToAdminAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0]), pageable));
+                    .mapToAdminAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0]), page));
         }
         if (searchWords.length == 2) {
             return AdminAppUserTableDTOMapper
-                    .mapToAdminAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0], searchWords[1]), pageable));
+                    .mapToAdminAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0], searchWords[1]), page));
         }
 
         return Page.empty();
@@ -102,9 +102,10 @@ public class AdminAppUserServiceImpl implements AdminAppUserService {
                             user.setPassword(passwordEncoder.encode(newUserPassword.getNewPassword()));
                         },
                         () -> {
-                            throw new AppUserNotFoundException(String.format("User with ID %s not found", id));
+                            throw new AppUserNotFoundException("User with ID " + id + " not found");
                         }
                 );
+
         return new AdminAppUserPasswordEditDTO(id);
     }
 

@@ -66,21 +66,21 @@ public class AppUserServiceImpl implements AppUserService {
         return AppUserProfileDTOMapper.mapToAppUserProfileDTO(currentUser);
     }
 
-    public Page<AppUserTableDTO> findAllUsers(Pageable pageable) {
-        return AppUserTableDTOMapper.mapToAppUserTableDTOs(appUserRepository.findAll(pageable));
+    public Page<AppUserTableDTO> findAllUsers(Pageable page) {
+        return AppUserTableDTOMapper.mapToAppUserTableDTOs(appUserRepository.findAll(page));
     }
 
-    public Page<AppUserTableDTO> findUsersBySearch(String searchQuery, Pageable pageable) {
+    public Page<AppUserTableDTO> findUsersBySearch(String searchQuery, Pageable page) {
         searchQuery = searchQuery.toLowerCase();
         String[] searchWords = searchQuery.split(" ");
 
         if (searchWords.length == 1 && !"".equals(searchWords[0])) {
             return AppUserTableDTOMapper
-                    .mapToAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0]), pageable));
+                    .mapToAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0]), page));
         }
         if (searchWords.length == 2) {
             return AppUserTableDTOMapper
-                    .mapToAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0], searchWords[1]), pageable));
+                    .mapToAppUserTableDTOs(appUserRepository.findAll(AppUserSpecification.bySearch(searchWords[0], searchWords[1]), page));
         }
 
         return Page.empty();
@@ -107,8 +107,8 @@ public class AppUserServiceImpl implements AppUserService {
         if (!checkIfCurrentPasswordIsCorrect(currentUser, newUserPasswordData.getCurrentPassword())) {
             throw new IncorrectCurrentPasswordException();
         }
-
         currentUser.setPassword(passwordEncoder.encode(newUserPasswordData.getNewPassword()));
+
         return new AppUserPasswordEditDTO();
     }
 

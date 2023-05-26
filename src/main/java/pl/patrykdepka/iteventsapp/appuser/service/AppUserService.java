@@ -13,9 +13,9 @@ public interface AppUserService {
 
     AppUserProfileDTO findUserProfile(AppUser currentUser);
 
-    Page<AppUserTableDTO> findAllUsers(Pageable pageable);
+    Page<AppUserTableDTO> findAllUsers(Pageable page);
 
-    Page<AppUserTableDTO> findUsersBySearch(String searchQuery, Pageable pageable);
+    Page<AppUserTableDTO> findUsersBySearch(String searchQuery, Pageable page);
 
     AppUserProfileDTO findUserProfileByUserId(Long id);
 

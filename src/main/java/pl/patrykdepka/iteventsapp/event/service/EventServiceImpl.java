@@ -49,20 +49,20 @@ public class EventServiceImpl implements EventService {
         return cityDTOs;
     }
 
-    public Page<EventCardDTO> findAllUpcomingEvents(LocalDateTime currentDateTime, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findAllUpcomingEvents(currentDateTime, pageable));
+    public Page<EventCardDTO> findAllUpcomingEvents(LocalDateTime currentDateTime, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findAllUpcomingEvents(currentDateTime, page));
     }
 
-    public Page<EventCardDTO> findUpcomingEventsByCity(String city, LocalDateTime currentDateTime, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUpcomingEventsByCity(city, currentDateTime, pageable));
+    public Page<EventCardDTO> findUpcomingEventsByCity(String city, LocalDateTime currentDateTime, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUpcomingEventsByCity(city, currentDateTime, page));
     }
 
-    public Page<EventCardDTO> findAllPastEvents(LocalDateTime currentDateTime, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findAllPastEvents(currentDateTime, pageable));
+    public Page<EventCardDTO> findAllPastEvents(LocalDateTime currentDateTime, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findAllPastEvents(currentDateTime, page));
     }
 
-    public Page<EventCardDTO> findPastEventsByCity(String city, LocalDateTime currentDateTime, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findPastEventsByCity(city, currentDateTime, pageable));
+    public Page<EventCardDTO> findPastEventsByCity(String city, LocalDateTime currentDateTime, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findPastEventsByCity(city, currentDateTime, page));
     }
 
     @Transactional
@@ -85,12 +85,12 @@ public class EventServiceImpl implements EventService {
         return event.checkIfCurrentUserIsParticipant(currentUser);
     }
 
-    public Page<EventCardDTO> findUserEvents(AppUser user, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUserEvents(user, pageable));
+    public Page<EventCardDTO> findUserEvents(AppUser user, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUserEvents(user, page));
     }
 
-    public Page<EventCardDTO> findUserEventsByCity(AppUser user, String city, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUserEventsByCity(user, city, pageable));
+    public Page<EventCardDTO> findUserEventsByCity(AppUser user, String city, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findUserEventsByCity(user, city, page));
     }
 
     private String getCityNameWithoutPlCharacters(String city) {

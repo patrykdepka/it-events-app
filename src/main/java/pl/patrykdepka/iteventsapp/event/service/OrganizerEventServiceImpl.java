@@ -61,12 +61,12 @@ public class OrganizerEventServiceImpl implements OrganizerEventService {
         return cityDTOs;
     }
 
-    public Page<EventCardDTO> findOrganizerEvents(AppUser currentUser, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findOrganizerEvents(currentUser, pageable));
+    public Page<EventCardDTO> findOrganizerEvents(AppUser currentUser, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findOrganizerEvents(currentUser, page));
     }
 
-    public Page<EventCardDTO> findOrganizerEventsByCity(AppUser currentUser, String city, Pageable pageable) {
-        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findOrganizerEventsByCity(currentUser, city, pageable));
+    public Page<EventCardDTO> findOrganizerEventsByCity(AppUser currentUser, String city, Pageable page) {
+        return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findOrganizerEventsByCity(currentUser, city, page));
     }
 
     public EventEditDTO findEventToEdit(AppUser currentUser, Long id) {
@@ -86,9 +86,9 @@ public class OrganizerEventServiceImpl implements OrganizerEventService {
                         });
     }
 
-    public Page<ParticipantDTO> findEventParticipants(AppUser currentUser, Long id, Pageable pageable) {
+    public Page<ParticipantDTO> findEventParticipants(AppUser currentUser, Long id, Pageable page) {
         Event event = returnEventIfCurrentUserIsOrganizer(currentUser, id);
-        return ParticipantDTOMapper.mapToParticipantDTOs(event.getParticipants(), pageable);
+        return ParticipantDTOMapper.mapToParticipantDTOs(event.getParticipants(), page);
     }
 
     @Transactional
@@ -116,7 +116,7 @@ public class OrganizerEventServiceImpl implements OrganizerEventService {
             return event;
         }
 
-        throw new EventNotFoundException(String.format("Event with ID %s not found", id));
+        throw new EventNotFoundException("Event with ID " + id + " not found");
     }
 
     private Event setEventFields(EventEditDTO source, Event target) {

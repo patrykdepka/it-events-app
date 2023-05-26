@@ -7,9 +7,9 @@ import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
 
 public interface AdminAppUserService {
 
-    Page<AdminAppUserTableDTO> findAllUsers(Pageable pageable);
+    Page<AdminAppUserTableDTO> findAllUsers(Pageable page);
 
-    Page<AdminAppUserTableDTO> findUsersBySearch(String searchQuery, Pageable pageable);
+    Page<AdminAppUserTableDTO> findUsersBySearch(String searchQuery, Pageable page);
 
     AdminAppUserAccountEditDTO findUserAccountToEdit(Long id);
 

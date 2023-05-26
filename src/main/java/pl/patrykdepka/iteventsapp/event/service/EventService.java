@@ -18,13 +18,13 @@ public interface EventService {
 
     List<CityDTO> findAllCities();
 
-    Page<EventCardDTO> findAllUpcomingEvents(LocalDateTime currentDateTime, Pageable pageable);
+    Page<EventCardDTO> findAllUpcomingEvents(LocalDateTime currentDateTime, Pageable page);
 
-    Page<EventCardDTO> findUpcomingEventsByCity(String city, LocalDateTime currentDateTime, Pageable pageable);
+    Page<EventCardDTO> findUpcomingEventsByCity(String city, LocalDateTime currentDateTime, Pageable page);
 
-    Page<EventCardDTO> findAllPastEvents(LocalDateTime currentDateTime, Pageable pageable);
+    Page<EventCardDTO> findAllPastEvents(LocalDateTime currentDateTime, Pageable page);
 
-    Page<EventCardDTO> findPastEventsByCity(String city, LocalDateTime currentDateTime, Pageable pageable);
+    Page<EventCardDTO> findPastEventsByCity(String city, LocalDateTime currentDateTime, Pageable page);
 
     void addUserToEventParticipantsList(AppUser currentUser, Long id);
 
@@ -32,7 +32,7 @@ public interface EventService {
 
     boolean checkIfCurrentUserIsParticipant(AppUser currentUser, EventDTO event);
 
-    Page<EventCardDTO> findUserEvents(AppUser currentUser, Pageable pageable);
+    Page<EventCardDTO> findUserEvents(AppUser currentUser, Pageable page);
 
-    Page<EventCardDTO> findUserEventsByCity(AppUser currentUser, String city, Pageable pageable);
+    Page<EventCardDTO> findUserEventsByCity(AppUser currentUser, String city, Pageable page);
 }

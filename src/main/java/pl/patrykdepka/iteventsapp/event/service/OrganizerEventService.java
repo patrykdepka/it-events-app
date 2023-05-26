@@ -13,15 +13,15 @@ public interface OrganizerEventService {
 
     List<CityDTO> findAllCities();
 
-    Page<EventCardDTO> findOrganizerEvents(AppUser currentUser, Pageable pageable);
+    Page<EventCardDTO> findOrganizerEvents(AppUser currentUser, Pageable page);
 
-    Page<EventCardDTO> findOrganizerEventsByCity(AppUser currentUser, String city, Pageable pageable);
+    Page<EventCardDTO> findOrganizerEventsByCity(AppUser currentUser, String city, Pageable page);
 
     EventEditDTO findEventToEdit(AppUser currentUser, Long id);
 
     void updateEvent(AppUser currentUser, EventEditDTO EventEditDTO);
 
-    Page<ParticipantDTO> findEventParticipants(AppUser currentUser, Long id, Pageable pageable);
+    Page<ParticipantDTO> findEventParticipants(AppUser currentUser, Long id, Pageable page);
 
     void removeParticipant(AppUser currentUser, Long eventId, Long participantId);
 }
