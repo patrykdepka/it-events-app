@@ -39,7 +39,7 @@ public class AppUserController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("newUserData", new AppUserRegistrationDTO());
-        return "forms/registration-form";
+        return "registration-form";
     }
 
     @PostMapping("/register")
@@ -49,7 +49,7 @@ public class AppUserController {
             bindingResult.addError(new FieldError("newUserData", "email", messageSource.getMessage("form.field.email.error.emailIsInUse.message", null, Locale.getDefault())));
         }
         if (bindingResult.hasErrors()) {
-            return "forms/registration-form";
+            return "registration-form";
         } else {
             appUserService.createUser(newUserData);
             return "redirect:/confirmation";
@@ -64,7 +64,7 @@ public class AppUserController {
     @GetMapping("/profile")
     public String getUserProfile(Model model) {
         model.addAttribute("userProfile", appUserService.findUserProfile(currentUserFacade.getCurrentUser()));
-        return "app-user-profile";
+        return "user/app-user-profile";
     }
 
     @GetMapping("/users")
@@ -85,7 +85,7 @@ public class AppUserController {
                     String sortParams = "sort_by=" + sortProperty + "&order_by=" + sortDirection;
                     model.addAttribute("sortParams", sortParams);
                 }
-                return "app-user-table";
+                return "user/app-user-table";
             } else {
                 if ((sortProperty != null && !"".equals(sortProperty)) && (sortDirection != null && !"".equals(sortDirection))) {
                     return "redirect:/users?page=" + users.getTotalPages() + "&sort_by=" + sortProperty + "&order_by=" + sortDirection;
@@ -122,14 +122,14 @@ public class AppUserController {
                         return "redirect:/users/results?search_query=" + searchQuery;
                     } else {
                         model.addAttribute("prefixUrl", "/users/results?search_query=" + searchQuery + "&");
-                        return "app-user-table";
+                        return "user/app-user-table";
                     }
                 } else if (page <= users.getTotalPages()) {
                     model.addAttribute("users", users);
                     searchQuery = searchQuery.replace(" ", "+");
                     model.addAttribute("searchQuery", searchQuery);
                     model.addAttribute("prefixUrl", "/users/results?search_query=" + searchQuery + "&");
-                    return "app-user-table";
+                    return "user/app-user-table";
                 } else {
                     searchQuery = searchQuery.replace(" ", "+");
                     if (sortProperty != null) {
@@ -152,14 +152,14 @@ public class AppUserController {
     @GetMapping("/users/{id}")
     public String getUserProfile(@PathVariable Long id, Model model) {
         model.addAttribute("userProfile", appUserService.findUserProfileByUserId(id));
-        return "app-user-profile";
+        return "user/app-user-profile";
     }
 
     @GetMapping("/settings/profile")
     public String showUserProfileEditForm(Model model) {
         model.addAttribute("profileUpdated", false);
         model.addAttribute("userProfile", appUserService.findUserProfileToEdit(currentUserFacade.getCurrentUser()));
-        return "forms/app-user-profile-edit-form";
+        return "user/forms/app-user-profile-edit-form";
     }
 
     @PatchMapping("/settings/profile")
@@ -172,13 +172,13 @@ public class AppUserController {
             model.addAttribute("userProfile", appUserService.updateUserProfile(currentUserFacade.getCurrentUser(), userProfile));
             model.addAttribute("profileUpdated", true);
         }
-        return "forms/app-user-profile-edit-form";
+        return "user/forms/app-user-profile-edit-form";
     }
 
     @GetMapping("/settings/password")
     public String showUserPasswordEditForm(Model model) {
         model.addAttribute("newUserPassword", new AppUserPasswordEditDTO());
-        return "forms/app-user-password-edit-form";
+        return "user/forms/app-user-password-edit-form";
     }
 
     @PatchMapping("/settings/password")
@@ -187,16 +187,16 @@ public class AppUserController {
                                      Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("passwordUpdated", false);
-            return "forms/app-user-password-edit-form";
+            return "user/forms/app-user-password-edit-form";
         } else {
             try {
                 model.addAttribute("newUserPassword", appUserService.updateUserPassword(currentUserFacade.getCurrentUser(), newUserPassword));
                 model.addAttribute("passwordUpdated", true);
-                return "forms/app-user-password-edit-form";
+                return "user/forms/app-user-password-edit-form";
             } catch (IncorrectCurrentPasswordException e) {
                 bindingResult.addError(new FieldError("newUserPassword", "currentPassword", messageSource.getMessage("form.field.currentPassword.error.invalidCurrentPassword.message", null, Locale.getDefault())));
                 model.addAttribute("passwordUpdated", false);
-                return "forms/app-user-password-edit-form";
+                return "user/forms/app-user-password-edit-form";
             }
         }
     }
