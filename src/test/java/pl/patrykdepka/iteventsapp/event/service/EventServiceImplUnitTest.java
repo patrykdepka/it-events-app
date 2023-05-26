@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_ORGANIZER;
 import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_USER;
 
-class EventServiceUnitTest {
+class EventServiceImplUnitTest {
     static final LocalDateTime DATE_TIME = LocalDateTime.now().withHour(18).withMinute(0);
     static final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.fromString("ASC"), "dateTime"));
     private EventRepository eventRepository;

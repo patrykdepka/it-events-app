@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_ORGANIZER;
 
-class EventImageServiceUnitTest {
+class EventImageServiceImplUnitTest {
     static final LocalDateTime DATE_TIME = LocalDateTime.now().withHour(18).withMinute(0);
     private EventImageRepository eventImageRepository;
     private EventImageServiceImpl eventImageServiceImpl;

@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
-class ProfileImageServiceUnitTest {
+class ProfileImageServiceImplUnitTest {
     private ProfileImageRepository profileImageRepository;
     private ProfileImageServiceImpl profileImageServiceImpl;
 

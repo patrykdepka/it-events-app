@@ -31,7 +31,7 @@ import static org.mockito.Mockito.times;
 import static pl.patrykdepka.iteventsapp.appuser.model.Role.*;
 import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_ADMIN;
 
-class AdminAppUserServiceUnitTest {
+class AdminAppUserServiceImplUnitTest {
     static final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.fromString("ASC"), "lastName"));
     private AppUserRepository appUserRepository;
     private ProfileImageService profileImageService;

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class CurrentUserFacadeUnitTest {
+class CurrentUserFacadeImplUnitTest {
     private AppUserRepository appUserRepository;
     private CurrentUserFacadeImpl currentUserFacadeImpl;
 
