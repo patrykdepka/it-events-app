@@ -1,5 +1,7 @@
 FROM maven:3.9-amazoncorretto-17 AS builder
-COPY . .
+COPY ./pom.xml ./pom.xml
+RUN mvn dependency:go-offline -B
+COPY ./src ./src
 RUN mvn clean package
 
 FROM amazoncorretto:17.0.9-alpine3.18
