@@ -132,7 +132,6 @@ class AdminAppUserServiceUnitTest {
         AppUser user = AppUserCreator.create(2L, "Jan", "Kowalski");
         when(appUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
         AdminAppUserAccountEditDTO newUserAccountData = AdminAppUserAccountEditDTO.builder()
-                .id(user.getId())
                 .enabled(false)
                 .accountNonLocked(false)
                 .roles(List.of(ROLE_ORGANIZER))
@@ -222,8 +221,7 @@ class AdminAppUserServiceUnitTest {
     void shouldThrowExceptionIfAdminPasswordIsIncorrectWhenDeletingUser() {
         // given
         AppUser admin = AppUserCreator.create(1L, "Admin", "Admin", ROLE_ADMIN);
-        AdminDeleteAppUserDTO deleteAppUserDTO = new AdminDeleteAppUserDTO(2L);
-        deleteAppUserDTO.setAdminPassword("admin");
+        AdminDeleteAppUserDTO deleteAppUserDTO = new AdminDeleteAppUserDTO(2L, "admin");
         when(passwordEncoder.matches(deleteAppUserDTO.getAdminPassword(), admin.getPassword())).thenReturn(false);
         // then
         assertThatThrownBy(() -> adminAppUserService.deleteUser(admin, deleteAppUserDTO))
@@ -234,8 +232,7 @@ class AdminAppUserServiceUnitTest {
     void shouldDeleteUser() {
         // given
         AppUser admin = AppUserCreator.create(1L, "Admin", "Admin", ROLE_ADMIN);
-        AdminDeleteAppUserDTO deleteAppUserDTO = new AdminDeleteAppUserDTO(2L);
-        deleteAppUserDTO.setAdminPassword("tests");
+        AdminDeleteAppUserDTO deleteAppUserDTO = new AdminDeleteAppUserDTO(2L, "tests");
         when(passwordEncoder.matches(deleteAppUserDTO.getAdminPassword(), admin.getPassword())).thenReturn(true);
         // when
         adminAppUserService.deleteUser(admin, deleteAppUserDTO);
