@@ -38,7 +38,7 @@ class AppUserController {
 
     @GetMapping("/register")
     String showRegistrationForm(Model model) {
-        model.addAttribute("newUserData", new AppUserRegistrationDTO());
+        model.addAttribute("newUserData", new AppUserRegistrationDTO(null, null, null, null, null, null));
         return "registration-form";
     }
 
@@ -182,7 +182,7 @@ class AppUserController {
 
     @GetMapping("/settings/password")
     String showUserPasswordEditForm(Model model) {
-        model.addAttribute("newUserPassword", new AppUserPasswordEditDTO());
+        model.addAttribute("newUserPassword", null);
         return "user/forms/app-user-password-edit-form";
     }
 

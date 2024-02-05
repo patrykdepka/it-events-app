@@ -1,47 +1,39 @@
 package pl.patrykdepka.iteventsapp.appuser.domain.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Value;
 import org.springframework.web.multipart.MultipartFile;
+import pl.patrykdepka.iteventsapp.core.DateTime;
 import pl.patrykdepka.iteventsapp.core.Image;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
+@Value
 public class AdminAppUserProfileEditDTO {
-    private Long id;
-    private String profileImageType;
-    private String profileImageData;
+    String profileImageType;
+    String profileImageData;
     @Image(width = 250, height = 250)
-    private MultipartFile profileImage;
-    @NotNull(message = "{form.field.firstName.error.notNull.message}")
-    @NotEmpty(message = "{form.field.firstName.error.notEmpty.message}")
+    MultipartFile profileImage;
+    @NotBlank(message = "{form.field.firstName.error.notBlank.message}")
     @Size(min = 2, max = 50, message = "{form.field.firstName.error.size.message}")
-    private String firstName;
-    @NotNull(message = "{form.field.lastName.error.notNull.message}")
-    @NotEmpty(message = "{form.field.lastName.error.notEmpty.message}")
+    String firstName;
+    @NotBlank(message = "{form.field.lastName.error.notBlank.message}")
     @Size(min = 2, max = 50, message = "{form.field.lastName.error.size.message}")
-    private String lastName;
+    String lastName;
     @NotNull(message = "{form.field.dateOfBirth.error.notNull.message}")
-    @NotEmpty(message = "{form.field.dateOfBirth.error.notEmpty.message}")
-    private String dateOfBirth;
+    @DateTime(iso = DateTime.ISO.DATE)
+    String dateOfBirth;
     @Size(max = 50, message = "{form.field.city.error.size.message}")
-    private String city;
+    String city;
     @Size(max = 1000, message = "{form.field.bio.error.size.message}")
-    private String bio;
-
-    private AdminAppUserProfileEditDTO() {
-    }
+    String bio;
 
     public static AdminAppUserProfileEditDTOBuilder builder() {
         return new AdminAppUserProfileEditDTOBuilder();
     }
 
     public static class AdminAppUserProfileEditDTOBuilder {
-        private Long id;
         private String profileImageType;
         private String profileImageData;
         private MultipartFile profileImage;
@@ -50,11 +42,6 @@ public class AdminAppUserProfileEditDTO {
         private String dateOfBirth;
         private String city;
         private String bio;
-
-        public AdminAppUserProfileEditDTOBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
 
         public AdminAppUserProfileEditDTOBuilder profileImageType(String profileImageType) {
             this.profileImageType = profileImageType;
@@ -81,13 +68,13 @@ public class AdminAppUserProfileEditDTO {
             return this;
         }
 
-        public AdminAppUserProfileEditDTOBuilder city(String city) {
-            this.city = city;
+        public AdminAppUserProfileEditDTOBuilder dateOfBirth(String dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        public AdminAppUserProfileEditDTOBuilder dateOfBirth(String dateOfBirth) {
-            this.dateOfBirth = dateOfBirth;
+        public AdminAppUserProfileEditDTOBuilder city(String city) {
+            this.city = city;
             return this;
         }
 
@@ -97,17 +84,16 @@ public class AdminAppUserProfileEditDTO {
         }
 
         public AdminAppUserProfileEditDTO build() {
-            AdminAppUserProfileEditDTO userProfile = new AdminAppUserProfileEditDTO();
-            userProfile.setId(id);
-            userProfile.setFirstName(firstName);
-            userProfile.setLastName(lastName);
-            userProfile.setProfileImageType(profileImageType);
-            userProfile.setProfileImageData(profileImageData);
-            userProfile.setProfileImage(profileImage);
-            userProfile.setDateOfBirth(dateOfBirth);
-            userProfile.setCity(city);
-            userProfile.setBio(bio);
-            return userProfile;
+            return new AdminAppUserProfileEditDTO(
+                    profileImageType,
+                    profileImageData,
+                    profileImage,
+                    firstName,
+                    lastName,
+                    dateOfBirth,
+                    city,
+                    bio
+            );
         }
     }
 }

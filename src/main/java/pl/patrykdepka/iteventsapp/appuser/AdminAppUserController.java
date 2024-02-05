@@ -168,7 +168,7 @@ class AdminAppUserController {
     @GetMapping("/admin/users/{id}/settings/password")
     String showUserPasswordEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("passwordUpdated", false);
-        model.addAttribute("newUserPassword", new AdminAppUserPasswordEditDTO(id));
+        model.addAttribute("newUserPassword", new AdminAppUserPasswordEditDTO(id, null, null, null));
         return "admin/forms/app-user-password-edit-form";
     }
 
@@ -197,7 +197,7 @@ class AdminAppUserController {
 
     @GetMapping("/admin/users/{id}/settings/delete_account")
     String showUserDeleteForm(@PathVariable Long id, Model model) {
-        model.addAttribute("deleteUserData", new AdminDeleteAppUserDTO(id));
+        model.addAttribute("deleteUserData", new AdminDeleteAppUserDTO(id, null));
         return "admin/forms/app-user-delete-form";
     }
 

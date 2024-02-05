@@ -103,7 +103,7 @@ public class AdminAppUserService {
                         }
                 );
 
-        return new AdminAppUserPasswordEditDTO(id);
+        return new AdminAppUserPasswordEditDTO(id, null, null, null);
     }
 
     public void deleteUser(AppUser currentUser, AdminDeleteAppUserDTO deleteUserData) {

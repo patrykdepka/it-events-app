@@ -105,7 +105,7 @@ public class AppUserService {
         }
         currentUser.setPassword(passwordEncoder.encode(newUserPasswordData.getNewPassword()));
 
-        return new AppUserPasswordEditDTO();
+        return new AppUserPasswordEditDTO(null, null, null);
     }
 
     private AppUser setUserProfileFields(AppUserProfileEditDTO source, AppUser target) {

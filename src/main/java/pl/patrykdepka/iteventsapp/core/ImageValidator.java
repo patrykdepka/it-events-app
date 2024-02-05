@@ -33,7 +33,7 @@ public class ImageValidator implements ConstraintValidator<Image, MultipartFile>
             boolean isFileTypeValid = Arrays.stream(allowedFileTypes).anyMatch(fileType::equals);
 
             if (!isFileTypeValid) {
-                message = "{form.field.image.error.invalidFileType.message}";
+                message = "{validation.annotation.Image.invalidFileType.message}";
                 errorMessages.add(message);
             }
 
@@ -42,7 +42,7 @@ public class ImageValidator implements ConstraintValidator<Image, MultipartFile>
                     ImageInputStream imageInputStream = ImageIO.createImageInputStream(image.getInputStream());
                     BufferedImage bufferedImage = ImageIO.read(imageInputStream);
                     if (bufferedImage.getWidth() > width || bufferedImage.getHeight() > height) {
-                        message = "{form.field.image.error.invalidImageSize.message}";
+                        message = "{validation.annotation.Image.invalidImageSize.message}";
                         errorMessages.add(message);
                     }
                 } catch (IOException e) {
@@ -51,11 +51,11 @@ public class ImageValidator implements ConstraintValidator<Image, MultipartFile>
             }
 
             if (image.getSize() > 2097152) {
-                message = "{form.field.image.error.invalidFileSize.message}";
+                message = "{validation.annotation.Image.invalidFileSize.message}";
                 errorMessages.add(message);
             }
 
-            if (errorMessages.size() > 0) {
+            if (!errorMessages.isEmpty()) {
                 context.disableDefaultConstraintViolation();
                 for (String errorMessage : errorMessages) {
                     context.buildConstraintViolationWithTemplate(errorMessage).addConstraintViolation();

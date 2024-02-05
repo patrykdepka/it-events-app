@@ -1,16 +1,13 @@
 package pl.patrykdepka.iteventsapp.appuser.domain.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Value;
 import pl.patrykdepka.iteventsapp.appuser.domain.PasswordValueMatch;
+import pl.patrykdepka.iteventsapp.appuser.domain.UniqueEmail;
+import pl.patrykdepka.iteventsapp.core.DateTime;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
-@Getter
-@Setter
+@Value
 @PasswordValueMatch.List({
         @PasswordValueMatch(
                 field = "password",
@@ -18,29 +15,25 @@ import javax.validation.constraints.Size;
         )
 })
 public class AppUserRegistrationDTO {
-    @NotNull(message = "{form.field.firstName.error.notNull.message}")
-    @NotEmpty(message = "{form.field.firstName.error.notEmpty.message}")
+    @NotBlank(message = "{form.field.firstName.error.notBlank.message}")
     @Size(min = 2, max = 50, message = "{form.field.firstName.error.size.message}")
-    private String firstName;
-    @NotNull(message = "{form.field.lastName.error.notNull.message}")
-    @NotEmpty(message = "{form.field.lastName.error.notEmpty.message}")
+    String firstName;
+    @NotBlank(message = "{form.field.lastName.error.notBlank.message}")
     @Size(min = 2, max = 50, message = "{form.field.lastName.error.size.message}")
-    private String lastName;
+    String lastName;
     @NotNull(message = "{form.field.dateOfBirth.error.notNull.message}")
-    @NotEmpty(message = "{form.field.dateOfBirth.error.notEmpty.message}")
-    private String dateOfBirth;
-    @NotNull(message = "{form.field.email.error.notNull.message}")
-    @NotEmpty(message = "{form.field.email.error.notEmpty.message}")
+    @DateTime(iso = DateTime.ISO.DATE)
+    String dateOfBirth;
+    @NotBlank(message = "{form.field.email.error.notBlank.message}")
     @Email(message = "{form.field.email.error.incorrectEmail.message}")
-    private String email;
-    @NotNull(message = "{form.field.password.error.notNull.message}")
-    @NotEmpty(message = "{form.field.password.error.notEmpty.message}")
+    @UniqueEmail(message = "{form.field.email.error.emailIsInUse.message}")
+    String email;
+    @NotBlank(message = "{form.field.password.error.notBlank.message}")
     @Size(min = 5, max = 100, message = "{form.field.password.error.size.message}")
-    private String password;
-    @NotNull(message = "{form.field.confirmPassword.error.notNull.message}")
-    @NotEmpty(message = "{form.field.confirmPassword.error.notEmpty.message}")
+    String password;
+    @NotBlank(message = "{form.field.confirmPassword.error.notBlank.message}")
     @Size(min = 5, max = 100, message = "{form.field.confirmPassword.error.size.message}")
-    private String confirmPassword;
+    String confirmPassword;
 
     public static AppUserRegistrationDTOBuilder builder() {
         return new AppUserRegistrationDTOBuilder();
@@ -85,14 +78,14 @@ public class AppUserRegistrationDTO {
         }
 
         public AppUserRegistrationDTO build() {
-            AppUserRegistrationDTO newUserData = new AppUserRegistrationDTO();
-            newUserData.setFirstName(firstName);
-            newUserData.setLastName(lastName);
-            newUserData.setDateOfBirth(dateOfBirth);
-            newUserData.setEmail(email);
-            newUserData.setPassword(password);
-            newUserData.setConfirmPassword(confirmPassword);
-            return newUserData;
+            return new AppUserRegistrationDTO(
+                    firstName,
+                    lastName,
+                    dateOfBirth,
+                    email,
+                    password,
+                    confirmPassword
+            );
         }
     }
 }
