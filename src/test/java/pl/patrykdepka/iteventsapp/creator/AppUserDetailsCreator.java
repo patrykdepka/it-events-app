@@ -1,7 +1,7 @@
 package pl.patrykdepka.iteventsapp.creator;
 
 import org.springframework.security.core.GrantedAuthority;
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
 import pl.patrykdepka.iteventsapp.security.AppUserDetails;
 
 import java.util.Base64;

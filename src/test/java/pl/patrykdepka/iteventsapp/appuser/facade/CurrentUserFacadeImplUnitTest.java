@@ -8,8 +8,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
-import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.CurrentUserFacadeImpl;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUserRepository;
 import pl.patrykdepka.iteventsapp.creator.AppUserCreator;
 import pl.patrykdepka.iteventsapp.creator.AppUserDetailsCreator;
 import pl.patrykdepka.iteventsapp.security.AppUserDetails;

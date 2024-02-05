@@ -1,12 +1,12 @@
 package pl.patrykdepka.iteventsapp.creator;
 
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
-import pl.patrykdepka.iteventsapp.appuser.model.Role;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.Role;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_USER;
+import static pl.patrykdepka.iteventsapp.appuser.domain.Role.ROLE_USER;
 import static pl.patrykdepka.iteventsapp.creator.ProfileImageCreator.createDefaultProfileImage;
 
 public class AppUserCreator {

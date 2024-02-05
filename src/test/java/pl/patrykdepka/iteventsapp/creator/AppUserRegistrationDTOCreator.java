@@ -1,6 +1,6 @@
 package pl.patrykdepka.iteventsapp.creator;
 
-import pl.patrykdepka.iteventsapp.appuser.dto.AppUserRegistrationDTO;
+import pl.patrykdepka.iteventsapp.appuser.domain.dto.AppUserRegistrationDTO;
 
 public class AppUserRegistrationDTOCreator {
 

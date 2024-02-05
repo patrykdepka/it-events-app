@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
 import pl.patrykdepka.iteventsapp.creator.AppUserCreator;
 import pl.patrykdepka.iteventsapp.creator.EventCreator;
 import pl.patrykdepka.iteventsapp.event.dto.CityDTO;
@@ -25,8 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_ORGANIZER;
-import static pl.patrykdepka.iteventsapp.appuser.model.Role.ROLE_USER;
+import static pl.patrykdepka.iteventsapp.appuser.domain.Role.ROLE_ORGANIZER;
+import static pl.patrykdepka.iteventsapp.appuser.domain.Role.ROLE_USER;
 
 class EventServiceImplUnitTest {
     static final LocalDateTime DATE_TIME = LocalDateTime.now().withHour(18).withMinute(0);

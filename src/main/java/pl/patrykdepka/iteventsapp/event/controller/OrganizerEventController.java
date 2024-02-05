@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.patrykdepka.iteventsapp.appuser.facade.CurrentUserFacade;
+import pl.patrykdepka.iteventsapp.appuser.domain.CurrentUserFacade;
 import pl.patrykdepka.iteventsapp.event.dto.CityDTO;
 import pl.patrykdepka.iteventsapp.event.dto.CreateEventDTO;
 import pl.patrykdepka.iteventsapp.event.dto.EventDTO;

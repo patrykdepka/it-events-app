@@ -15,7 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
-import static pl.patrykdepka.iteventsapp.appuser.model.Role.*;
+import static pl.patrykdepka.iteventsapp.appuser.domain.Role.*;
 
 @Configuration
 public class SecurityConfig {

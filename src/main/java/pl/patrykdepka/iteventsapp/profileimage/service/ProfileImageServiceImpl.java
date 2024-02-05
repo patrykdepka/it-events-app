@@ -3,7 +3,7 @@ package pl.patrykdepka.iteventsapp.profileimage.service;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
 import pl.patrykdepka.iteventsapp.profileimage.exception.DefaultProfileImageNotFoundException;
 import pl.patrykdepka.iteventsapp.profileimage.model.ProfileImage;
 import pl.patrykdepka.iteventsapp.profileimage.repository.ProfileImageRepository;

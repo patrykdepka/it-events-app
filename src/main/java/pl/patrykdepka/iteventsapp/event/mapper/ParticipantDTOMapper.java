@@ -3,7 +3,7 @@ package pl.patrykdepka.iteventsapp.event.mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
 import pl.patrykdepka.iteventsapp.event.dto.ParticipantDTO;
 
 import java.util.List;

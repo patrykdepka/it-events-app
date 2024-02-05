@@ -1,6 +1,6 @@
 package pl.patrykdepka.iteventsapp.creator;
 
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
 import pl.patrykdepka.iteventsapp.event.enumeration.AdmissionType;
 import pl.patrykdepka.iteventsapp.event.enumeration.EventType;
 import pl.patrykdepka.iteventsapp.event.model.Event;

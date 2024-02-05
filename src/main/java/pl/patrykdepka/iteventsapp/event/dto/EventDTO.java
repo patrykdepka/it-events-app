@@ -2,7 +2,7 @@ package pl.patrykdepka.iteventsapp.event.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
 
 import java.util.List;
 

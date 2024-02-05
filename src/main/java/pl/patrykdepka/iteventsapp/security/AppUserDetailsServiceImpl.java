@@ -7,8 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.patrykdepka.iteventsapp.appuser.model.AppUser;
-import pl.patrykdepka.iteventsapp.appuser.repository.AppUserRepository;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
+import pl.patrykdepka.iteventsapp.appuser.domain.AppUserRepository;
 
 import javax.transaction.Transactional;
 import java.util.Base64;
