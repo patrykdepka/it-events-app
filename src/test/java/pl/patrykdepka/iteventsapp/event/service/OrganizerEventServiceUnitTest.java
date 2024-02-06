@@ -162,11 +162,10 @@ class OrganizerEventServiceUnitTest {
         EventEditDTO returnedEventToEdit = organizerEventService.findEventToEdit(organizer, event.getId());
         // then
         assertThat(returnedEventToEdit).isNotNull();
-        assertThat(returnedEventToEdit.getId()).isEqualTo(event.getId());
         assertThat(returnedEventToEdit.getName()).isEqualTo(event.getName());
         assertThat(returnedEventToEdit).isNotNull();
-        assertThat(returnedEventToEdit.getImageType()).isEqualTo(event.getEventImage().getFileType());
-        assertThat(returnedEventToEdit.getImageData()).isEqualTo(Base64.getEncoder().encodeToString(event.getEventImage().getFileData()));
+        assertThat(returnedEventToEdit.getEventImageType()).isEqualTo(event.getEventImage().getFileType());
+        assertThat(returnedEventToEdit.getEventImageData()).isEqualTo(Base64.getEncoder().encodeToString(event.getEventImage().getFileData()));
         assertThat(returnedEventToEdit.getEventType()).isEqualTo(event.getEventType());
         assertThat(returnedEventToEdit.getDateTime()).isEqualTo(event.getDateTime().toString());
         assertThat(returnedEventToEdit.getLanguage()).isEqualTo(event.getLanguage());
@@ -195,9 +194,9 @@ class OrganizerEventServiceUnitTest {
         AppUser organizer = AppUserCreator.create(4L, "Jan", "Nowak", ROLE_ORGANIZER);
         Event event = EventCreator.create(1L, "Java Dev Talks #1", DATE_TIME, organizer);
         when(eventRepository.findById(event.getId())).thenReturn(Optional.of(event));
-        EventEditDTO newEventData = EventEditDTOCreator.create(event.getId(), DATE_TIME);
+        EventEditDTO newEventData = EventEditDTOCreator.create(DATE_TIME);
         // when
-        organizerEventService.updateEvent(organizer, newEventData);
+        organizerEventService.updateEvent(event.getId(), newEventData);
         // then
         verify(eventRepository, times(1)).findById(eq(event.getId()));
     }

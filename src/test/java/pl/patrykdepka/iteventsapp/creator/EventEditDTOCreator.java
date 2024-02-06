@@ -9,9 +9,8 @@ import java.time.LocalDateTime;
 
 public class EventEditDTOCreator {
 
-    public static EventEditDTO create(Long id, LocalDateTime localDateTime) throws IOException {
+    public static EventEditDTO create(LocalDateTime localDateTime) throws IOException {
         return EventEditDTO.builder()
-                .id(id)
                 .name("Updated test name")
                 .eventImage(EventImageCreator.createNewEventImageFile())
                 .eventType(EventType.CONFERENCE)
