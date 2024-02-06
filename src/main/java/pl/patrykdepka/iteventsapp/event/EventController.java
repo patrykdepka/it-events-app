@@ -35,9 +35,8 @@ class EventController {
 
     @GetMapping("/events/{id}")
     String getEvent(@PathVariable Long id, Model model) {
-        EventDTO event = eventService.findEvent(id);
+        EventDTO event = eventService.findEvent(id, currentUserFacade.getCurrentUser());
         model.addAttribute("event", event);
-        model.addAttribute("currentUserIsParticipant", eventService.checkIfCurrentUserIsParticipant(currentUserFacade.getCurrentUser(), event));
         return "event";
     }
 

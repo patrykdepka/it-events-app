@@ -44,16 +44,18 @@ public class OrganizerEventService {
         event.setAddress(newEventData.getAddress());
         event.setOrganizer(currentUser);
         event.setDescription(newEventData.getDescription());
-        return EventDTOMapper.mapToEventDTO(eventRepository.save(event));
+        Event createdEvent = eventRepository.save(event);
+        return EventDTOMapper.mapToEventDTO(createdEvent, currentUser);
     }
 
     public List<CityDTO> findAllCities() {
         List<String> cities = eventRepository.findAllCities();
         List<CityDTO> cityDTOs = new ArrayList<>();
         for (String city : cities) {
-            CityDTO cityDTO = new CityDTO();
-            cityDTO.setNameWithoutPlCharacters(getCityNameWithoutPlCharacters(city));
-            cityDTO.setDisplayName(city);
+            CityDTO cityDTO = new CityDTO(
+                    getCityNameWithoutPlCharacters(city),
+                    city
+            );
             cityDTOs.add(cityDTO);
         }
         return cityDTOs;
@@ -72,15 +74,15 @@ public class OrganizerEventService {
     }
 
     @Transactional
-    public void updateEvent(AppUser currentUser, EventEditDTO editEventDTO) {
+    public void updateEvent(Long id, EventEditDTO eventEditData) {
         eventRepository
-                .findById(editEventDTO.getId())
+                .findById(id)
                 .ifPresentOrElse(
                         event -> {
-                            setEventFields(editEventDTO, event);
+                            setEventFields(eventEditData, event);
                         },
                         () -> {
-                            throw new EventNotFoundException("Event with ID " + editEventDTO.getId() + " not found");
+                            throw new EventNotFoundException("Event with ID " + id + " not found");
                         });
     }
 

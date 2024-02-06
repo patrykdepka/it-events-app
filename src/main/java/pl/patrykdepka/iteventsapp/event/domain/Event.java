@@ -57,6 +57,10 @@ public class Event extends BaseEntity {
         return true;
     }
 
+    public boolean checkIfUserIsParticipant(AppUser user) {
+        return participants.contains(user);
+    }
+
     public static EventBuilder builder() {
         return new EventBuilder();
     }

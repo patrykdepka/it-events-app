@@ -29,7 +29,7 @@ class OrganizerEventController {
 
     @GetMapping("/organizer/create_event")
     String showCreateEventForm(Model model) {
-        model.addAttribute("newEventData", new CreateEventDTO());
+        model.addAttribute("newEventData", new CreateEventDTO(null, null, null, null, null, null, null, null, null));
         return "organizer/forms/create-event-form";
     }
 
@@ -74,13 +74,17 @@ class OrganizerEventController {
         return "organizer/forms/event-edit-form";
     }
 
-    @PatchMapping("/organizer/events")
-    String updateEvent(@Valid @ModelAttribute("eventEditData") EventEditDTO eventEditData, BindingResult bindingResult) {
+    @PatchMapping("/organizer/events/{id}")
+    String updateEvent(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("eventEditData") EventEditDTO eventEditData,
+            BindingResult bindingResult
+    ) {
         if (bindingResult.hasErrors()) {
             return "organizer/forms/event-edit-form";
         } else {
-            organizerEventService.updateEvent(currentUserFacade.getCurrentUser(), eventEditData);
-            return "redirect:/events/" + eventEditData.getId();
+            organizerEventService.updateEvent(id, eventEditData);
+            return "redirect:/events/" + id;
         }
     }
 

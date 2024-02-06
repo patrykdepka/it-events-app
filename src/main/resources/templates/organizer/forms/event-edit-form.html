@@ -22,7 +22,7 @@
             </ul>
         </div>
         <div class="col-md-9">
-            <form id="eventEditForm" name="eventEditForm" class="custom-form" enctype="multipart/form-data" onsubmit="return validateEventEditForm();" method="post" th:method="patch" action="#" th:action="@{'/organizer/events'}" th:object="${eventEditData}">
+            <form id="eventEditForm" name="eventEditForm" class="custom-form" enctype="multipart/form-data" onsubmit="return validateEventEditForm();" method="post" th:method="patch" action="#" th:action="@{'/organizer/events' + ${eventEditData.id}}" th:object="${eventEditData}">
                 <div class="form-heading">
                     <h2>Zaktualizuj wydarzenie</h2>
                     <span>Wprowadź informacje o wydarzeniu poniżej</span>

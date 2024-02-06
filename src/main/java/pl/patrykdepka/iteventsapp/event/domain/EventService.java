@@ -29,10 +29,10 @@ public class EventService {
         return EventCardDTOMapper.mapToEventCardDTOs(eventRepository.findFirst10EventsByOrderByDateTimeAsc());
     }
 
-    public EventDTO findEvent(Long id) {
+    public EventDTO findEvent(Long id, AppUser currentUser) {
         return eventRepository
                 .findById(id)
-                .map(EventDTOMapper::mapToEventDTO)
+                .map(event -> EventDTOMapper.mapToEventDTO(event, currentUser))
                 .orElseThrow(() -> new EventNotFoundException("Event with ID " + id + " not found"));
     }
 
@@ -40,9 +40,10 @@ public class EventService {
         List<String> cities = eventRepository.findAllCities();
         List<CityDTO> cityDTOs = new ArrayList<>();
         for (String city : cities) {
-            CityDTO cityDTO = new CityDTO();
-            cityDTO.setNameWithoutPlCharacters(getCityNameWithoutPlCharacters(city));
-            cityDTO.setDisplayName(city);
+            CityDTO cityDTO = new CityDTO(
+                    getCityNameWithoutPlCharacters(city),
+                    city
+            );
             cityDTOs.add(cityDTO);
         }
         return cityDTOs;
@@ -78,10 +79,6 @@ public class EventService {
                 .findById(id)
                 .map(event -> event.removeParticipant(currentUser))
                 .orElseThrow(() -> new EventNotFoundException("Event with ID " + id + " not found"));
-    }
-
-    public boolean checkIfCurrentUserIsParticipant(AppUser currentUser, EventDTO event) {
-        return event.checkIfCurrentUserIsParticipant(currentUser);
     }
 
     public Page<EventCardDTO> findUserEvents(AppUser user, Pageable page) {

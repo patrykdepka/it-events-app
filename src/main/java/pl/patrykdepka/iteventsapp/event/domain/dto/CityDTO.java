@@ -1,11 +1,9 @@
 package pl.patrykdepka.iteventsapp.event.domain.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Value;
 
-@Getter
-@Setter
+@Value
 public class CityDTO {
-    private String nameWithoutPlCharacters;
-    private String displayName;
+    String nameWithoutPlCharacters;
+    String displayName;
 }

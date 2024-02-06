@@ -1,60 +1,49 @@
 package pl.patrykdepka.iteventsapp.event.domain.dto;
 
-import lombok.*;
+import lombok.Value;
 import org.springframework.web.multipart.MultipartFile;
+import pl.patrykdepka.iteventsapp.core.DateTime;
 import pl.patrykdepka.iteventsapp.core.Image;
 import pl.patrykdepka.iteventsapp.event.domain.AdmissionType;
 import pl.patrykdepka.iteventsapp.event.domain.EventType;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
 public class EventEditDTO {
-    private Long id;
-    @NotNull(message = "{form.field.name.error.notNull.message}")
-    @NotEmpty(message = "{form.field.name.error.notEmpty.message}")
-    private String name;
-    private String imageType;
-    private String imageData;
+    @NotBlank(message = "{form.field.name.error.notBlank.message}")
+    String name;
+    String eventImageType;
+    String eventImageData;
     @Image(width = 480, height = 270)
-    private MultipartFile eventImage;
+    MultipartFile eventImage;
     @NotNull(message = "{form.field.eventType.error.notNull.message}")
-    private EventType eventType;
-    @NotNull(message = "{form.field.dateTime.error.notNull.message}")
-    @NotEmpty(message = "{form.field.dateTime.error.notEmpty.message}")
-    private String dateTime;
-    @NotNull(message = "{form.field.language.error.notNull.message}")
-    @NotEmpty(message = "{form.field.language.error.notEmpty.message}")
-    private String language;
+    EventType eventType;
+    @NotNull(message = "{form.field.dateOfBirth.error.notNull.message}")
+    @DateTime(message = "{validation.annotation.DateTime.dateTime.invalidFormat.message}", iso = DateTime.ISO.DATE_TIME)
+    String dateTime;
+    @NotBlank(message = "{form.field.language.error.notBlank.message}")
+    String language;
     @NotNull(message = "{form.field.admission.error.notNull.message}")
-    private AdmissionType admission;
-    @NotNull(message = "{form.field.city.error.notNull.message}")
-    @NotEmpty(message = "{form.field.city.error.notEmpty.message}")
-    private String city;
-    @NotNull(message = "{form.field.location.error.notNull.message}")
-    @NotEmpty(message = "{form.field.location.error.notEmpty.message}")
-    private String location;
-    @NotNull(message = "{form.field.address.error.notNull.message}")
-    @NotEmpty(message = "{form.field.address.error.notEmpty.message}")
-    private String address;
-    @NotNull(message = "{form.field.description.error.notNull.message}")
-    @NotEmpty(message = "{form.field.description.error.notEmpty.message}")
-    private String description;
+    AdmissionType admission;
+    @NotBlank(message = "{form.field.city.error.notBlank.message}")
+    String city;
+    @NotBlank(message = "{form.field.location.error.notBlank.message}")
+    String location;
+    @NotBlank(message = "{form.field.address.error.notBlank.message}")
+    String address;
+    @NotBlank(message = "{form.field.description.error.notBlank.message}")
+    String description;
 
     public static EventEditDTOBuilder builder() {
         return new EventEditDTOBuilder();
     }
 
     public static class EventEditDTOBuilder {
-        private Long id;
         private String name;
-        private String imageType;
-        private String imageData;
+        private String eventImageType;
+        private String eventImageData;
         private MultipartFile eventImage;
         private EventType eventType;
         private String dateTime;
@@ -65,23 +54,18 @@ public class EventEditDTO {
         private String address;
         private String description;
 
-        public EventEditDTOBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
         public EventEditDTOBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        public EventEditDTOBuilder imageType(String imageType) {
-            this.imageType = imageType;
+        public EventEditDTOBuilder eventImageType(String eventImageType) {
+            this.eventImageType = eventImageType;
             return this;
         }
 
-        public EventEditDTOBuilder imageData(String imageData) {
-            this.imageData = imageData;
+        public EventEditDTOBuilder eventImageData(String eventImageData) {
+            this.eventImageData = eventImageData;
             return this;
         }
 
@@ -131,21 +115,20 @@ public class EventEditDTO {
         }
 
         public EventEditDTO build() {
-            EventEditDTO eventData = new EventEditDTO();
-            eventData.setId(id);
-            eventData.setName(name);
-            eventData.setImageType(imageType);
-            eventData.setImageData(imageData);
-            eventData.setEventImage(eventImage);
-            eventData.setEventType(eventType);
-            eventData.setDateTime(dateTime);
-            eventData.setLanguage(language);
-            eventData.setAdmission(admission);
-            eventData.setCity(city);
-            eventData.setLocation(location);
-            eventData.setAddress(address);
-            eventData.setDescription(description);
-            return eventData;
+            return new EventEditDTO(
+                    name,
+                    eventImageType,
+                    eventImageData,
+                    eventImage,
+                    eventType,
+                    dateTime,
+                    language,
+                    admission,
+                    city,
+                    location,
+                    address,
+                    description
+            );
         }
     }
 }
