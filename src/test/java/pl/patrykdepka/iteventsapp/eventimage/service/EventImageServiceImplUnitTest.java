@@ -9,7 +9,7 @@ import pl.patrykdepka.iteventsapp.appuser.domain.AppUser;
 import pl.patrykdepka.iteventsapp.creator.AppUserCreator;
 import pl.patrykdepka.iteventsapp.creator.EventCreator;
 import pl.patrykdepka.iteventsapp.creator.EventImageCreator;
-import pl.patrykdepka.iteventsapp.event.model.Event;
+import pl.patrykdepka.iteventsapp.event.domain.Event;
 import pl.patrykdepka.iteventsapp.eventimage.model.EventImage;
 import pl.patrykdepka.iteventsapp.eventimage.repository.EventImageRepository;
 

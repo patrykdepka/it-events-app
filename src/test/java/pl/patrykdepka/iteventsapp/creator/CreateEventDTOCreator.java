@@ -1,8 +1,8 @@
 package pl.patrykdepka.iteventsapp.creator;
 
-import pl.patrykdepka.iteventsapp.event.dto.CreateEventDTO;
-import pl.patrykdepka.iteventsapp.event.enumeration.AdmissionType;
-import pl.patrykdepka.iteventsapp.event.enumeration.EventType;
+import pl.patrykdepka.iteventsapp.event.domain.dto.CreateEventDTO;
+import pl.patrykdepka.iteventsapp.event.domain.AdmissionType;
+import pl.patrykdepka.iteventsapp.event.domain.EventType;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
