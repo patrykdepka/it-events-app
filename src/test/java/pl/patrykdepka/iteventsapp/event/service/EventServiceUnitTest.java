@@ -69,10 +69,11 @@ class EventServiceUnitTest {
     void shouldReturnEvent() {
         // given
         AppUser organizer = AppUserCreator.create(4L, "Jan", "Nowak", ROLE_ORGANIZER);
+        AppUser user = AppUserCreator.create(2L, "Jan", "Kowalski");
         Event event = EventCreator.create(1L, "Java Dev Talks #1", DATE_TIME, organizer);
         when(eventRepository.findById(event.getId())).thenReturn(Optional.of(event));
         // when
-        EventDTO returnedEvent = eventService.findEvent(event.getId());
+        EventDTO returnedEvent = eventService.findEvent(event.getId(), user);
         // then
         assertThat(returnedEvent.getId()).isEqualTo(event.getId());
         assertThat(returnedEvent.getName()).isEqualTo(event.getName());
@@ -201,30 +202,6 @@ class EventServiceUnitTest {
         eventService.addUserToEventParticipantsList(user, event.getId());
         // then
         verify(eventRepository, Mockito.times(1)).findById(eq(event.getId()));
-    }
-
-    @Test
-    void shouldReturnTrueIfUserIsEventParticipant() {
-        // given
-        AppUser organizer = AppUserCreator.create(4L, "Jan", "Nowak", ROLE_ORGANIZER);
-        AppUser user = AppUserCreator.create(2L, "Jan", "Kowalski", ROLE_USER);
-        Event event = EventCreator.create(1L, "Java Dev Talks #1", DATE_TIME, organizer, List.of(user));
-        // when
-        boolean isParticipant = eventService.checkIfCurrentUserIsParticipant(user, EventDTOMapper.mapToEventDTO(event));
-        // then
-        assertThat(isParticipant).isTrue();
-    }
-
-    @Test
-    void shouldReturnFalseIfUserIsNotEventParticipant() {
-        // given
-        AppUser organizer = AppUserCreator.create(4L, "Jan", "Nowak", ROLE_ORGANIZER);
-        AppUser user = AppUserCreator.create(2L, "Jan", "Kowalski", ROLE_USER);
-        Event event = EventCreator.create(1L, "Java Dev Talks #1", DATE_TIME, organizer);
-        // when
-        boolean isParticipant = eventService.checkIfCurrentUserIsParticipant(user, EventDTOMapper.mapToEventDTO(event));
-        // then
-        assertThat(isParticipant).isFalse();
     }
 
     @Test
