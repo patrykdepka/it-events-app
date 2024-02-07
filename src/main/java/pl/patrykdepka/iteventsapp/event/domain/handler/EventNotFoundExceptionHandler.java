@@ -15,7 +15,7 @@ public class EventNotFoundExceptionHandler extends AbstractExceptionHandler {
     private static final String MESSAGE_CODE = "exception.EventNotFoundException.message";
 
     public EventNotFoundExceptionHandler(MessageSource messageSource) {
-        super(HttpStatus.NOT_FOUND, MESSAGE_CODE, messageSource, EventNotFoundException.class);
+        super(HttpStatus.NOT_FOUND, messageSource, MESSAGE_CODE, EventNotFoundException.class);
     }
 
     @Override

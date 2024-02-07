@@ -10,27 +10,25 @@ import pl.patrykdepka.iteventsapp.appuser.domain.exception.IncorrectCurrentPassw
 import pl.patrykdepka.iteventsapp.appuser.domain.mapper.AdminAppUserAccountEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.domain.mapper.AdminAppUserProfileEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.domain.mapper.AdminAppUserTableDTOMapper;
-import pl.patrykdepka.iteventsapp.profileimage.model.ProfileImage;
-import pl.patrykdepka.iteventsapp.profileimage.service.ProfileImageService;
+import pl.patrykdepka.iteventsapp.image.domain.ImageService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Service
 public class AdminAppUserService {
     private final AppUserRepository appUserRepository;
-    private final ProfileImageService profileImageService;
+    private final ImageService imageService;
     private final PasswordEncoder passwordEncoder;
 
     public AdminAppUserService(
             AppUserRepository appUserRepository,
-            ProfileImageService profileImageService,
+            ImageService imageService,
             PasswordEncoder passwordEncoder
     ) {
         this.appUserRepository = appUserRepository;
-        this.profileImageService = profileImageService;
+        this.imageService = imageService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -132,8 +130,7 @@ public class AdminAppUserService {
 
     private AppUser setUserProfileFields(AdminAppUserProfileEditDTO source, AppUser target) {
         if (source.getProfileImage() != null && !source.getProfileImage().isEmpty()) {
-            Optional<ProfileImage> profileImage = profileImageService.updateProfileImage(target, source.getProfileImage());
-            profileImage.ifPresent(target::setProfileImage);
+            imageService.updateImage(target.getProfileImage().getId(), source.getProfileImage());
         }
         if (source.getFirstName() != null && !source.getFirstName().equals(target.getFirstName())) {
             target.setFirstName(source.getFirstName());

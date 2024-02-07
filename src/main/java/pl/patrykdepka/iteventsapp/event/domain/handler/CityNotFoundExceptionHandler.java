@@ -15,7 +15,7 @@ public class CityNotFoundExceptionHandler extends AbstractExceptionHandler {
     private static final String MESSAGE_CODE = "exception.CityNotFoundException.message";
 
     public CityNotFoundExceptionHandler(MessageSource messageSource) {
-        super(HttpStatus.NOT_FOUND, MESSAGE_CODE, messageSource, CityNotFoundException.class);
+        super(HttpStatus.NOT_FOUND, messageSource, MESSAGE_CODE, CityNotFoundException.class);
     }
 
     @Override

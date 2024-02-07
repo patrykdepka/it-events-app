@@ -12,7 +12,7 @@ public class EventEditDTOMapper {
     public static EventEditDTO mapToEventEditDTO(Event event) {
         return new EventEditDTO(
                 event.getName(),
-                event.getEventImage().getFileType(),
+                event.getEventImage().getType(),
                 Base64.getEncoder().encodeToString(event.getEventImage().getFileData()),
                 null,
                 EventType.valueOf(event.getEventType().toString()),

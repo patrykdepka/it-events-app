@@ -1,10 +1,11 @@
 package pl.patrykdepka.iteventsapp.appuser.domain.dto;
 
 import lombok.Value;
+import pl.patrykdepka.iteventsapp.image.domain.ImageType;
 
 @Value
 public class AppUserProfileDTO {
-    String profileImageType;
+    ImageType profileImageType;
     String profileImageData;
     String firstName;
     String lastName;
@@ -17,7 +18,7 @@ public class AppUserProfileDTO {
     }
 
     public static class AppUserProfileDTOBuilder {
-        private String profileImageType;
+        private ImageType profileImageType;
         private String profileImageData;
         private String firstName;
         private String lastName;
@@ -25,7 +26,7 @@ public class AppUserProfileDTO {
         private String city;
         private String bio;
 
-        public AppUserProfileDTOBuilder profileImageType(String profileImageType) {
+        public AppUserProfileDTOBuilder profileImageType(ImageType profileImageType) {
             this.profileImageType = profileImageType;
             return this;
         }

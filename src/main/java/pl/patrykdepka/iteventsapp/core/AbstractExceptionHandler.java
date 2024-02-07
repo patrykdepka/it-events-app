@@ -8,19 +8,19 @@ import java.util.Locale;
 
 public abstract class AbstractExceptionHandler implements ExceptionHandler {
     protected final HttpStatus httpStatus;
-    private final String messageCode;
     private final MessageSource messageSource;
+    private final String messageCode;
     private final Class<? extends Exception> exceptionClass;
 
     public AbstractExceptionHandler(
             HttpStatus httpStatus,
-            String messageCode,
             MessageSource messageSource,
+            String messageCode,
             Class<? extends Exception> exceptionClass
     ) {
         this.httpStatus = httpStatus;
-        this.messageCode = messageCode;
         this.messageSource = messageSource;
+        this.messageCode = messageCode;
         this.exceptionClass = exceptionClass;
     }
 

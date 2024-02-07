@@ -13,7 +13,7 @@ public class AdminAppUserProfileEditDTOMapper {
 
     public static AdminAppUserProfileEditDTO mapToAdminAppUserProfileEditDTO(AppUser user) {
         return AdminAppUserProfileEditDTO.builder()
-                .profileImageType(user.getProfileImage().getFileType())
+                .profileImageType(user.getProfileImage().getType())
                 .profileImageData(Base64.getEncoder().encodeToString(user.getProfileImage().getFileData()))
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())

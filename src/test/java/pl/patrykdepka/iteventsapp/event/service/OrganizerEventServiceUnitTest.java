@@ -16,7 +16,8 @@ import pl.patrykdepka.iteventsapp.event.domain.EventRepository;
 import pl.patrykdepka.iteventsapp.event.domain.OrganizerEventService;
 import pl.patrykdepka.iteventsapp.event.domain.dto.*;
 import pl.patrykdepka.iteventsapp.event.domain.exception.EventNotFoundException;
-import pl.patrykdepka.iteventsapp.eventimage.service.EventImageService;
+import pl.patrykdepka.iteventsapp.image.domain.ImageService;
+import pl.patrykdepka.iteventsapp.image.domain.ImageType;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -36,14 +37,14 @@ class OrganizerEventServiceUnitTest {
     static final LocalDateTime DATE_TIME = LocalDateTime.now().withHour(18).withMinute(0);
     static final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.fromString("ASC"), "dateTime"));
     private EventRepository eventRepository;
-    private EventImageService eventImageService;
+    private ImageService imageService;
     private OrganizerEventService organizerEventService;
 
     @BeforeEach
     void setUp() {
         eventRepository = Mockito.mock(EventRepository.class);
-        eventImageService = Mockito.mock(EventImageService.class);
-        organizerEventService = new OrganizerEventService(eventRepository, eventImageService);
+        imageService = Mockito.mock(ImageService.class);
+        organizerEventService = new OrganizerEventService(eventRepository, imageService);
     }
 
     @Test
@@ -51,7 +52,8 @@ class OrganizerEventServiceUnitTest {
         // given
         AppUser organizer = AppUserCreator.create(4L, "Jan", "Nowak", ROLE_ORGANIZER);
         CreateEventDTO newEventData = CreateEventDTOCreator.create(DATE_TIME);
-        when(eventImageService.createDefaultEventImage()).thenReturn(EventImageCreator.createDefaultEventImage(1L));
+        when(imageService.createDefaultImage(ImageService.DEFAULT_EVENT_IMAGE_NAME, ImageType.EVENT_IMAGE))
+                .thenReturn(EventImageCreator.createDefaultEventImage(1L));
         when(eventRepository.save(any(Event.class))).thenAnswer(i -> i.getArguments()[0]);
         // when
         EventDTO returnedCreatedEvent = organizerEventService.createEvent(organizer, newEventData);
@@ -164,7 +166,7 @@ class OrganizerEventServiceUnitTest {
         assertThat(returnedEventToEdit).isNotNull();
         assertThat(returnedEventToEdit.getName()).isEqualTo(event.getName());
         assertThat(returnedEventToEdit).isNotNull();
-        assertThat(returnedEventToEdit.getEventImageType()).isEqualTo(event.getEventImage().getFileType());
+        assertThat(returnedEventToEdit.getEventImageType()).isEqualTo(event.getEventImage().getType());
         assertThat(returnedEventToEdit.getEventImageData()).isEqualTo(Base64.getEncoder().encodeToString(event.getEventImage().getFileData()));
         assertThat(returnedEventToEdit.getEventType()).isEqualTo(event.getEventType());
         assertThat(returnedEventToEdit.getDateTime()).isEqualTo(event.getDateTime().toString());

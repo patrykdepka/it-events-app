@@ -13,7 +13,8 @@ import pl.patrykdepka.iteventsapp.event.domain.mapper.EventCardDTOMapper;
 import pl.patrykdepka.iteventsapp.event.domain.mapper.EventDTOMapper;
 import pl.patrykdepka.iteventsapp.event.domain.mapper.EventEditDTOMapper;
 import pl.patrykdepka.iteventsapp.event.domain.mapper.ParticipantDTOMapper;
-import pl.patrykdepka.iteventsapp.eventimage.service.EventImageService;
+import pl.patrykdepka.iteventsapp.image.domain.ImageService;
+import pl.patrykdepka.iteventsapp.image.domain.ImageType;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,17 +25,17 @@ import java.util.Optional;
 @Service
 public class OrganizerEventService {
     private final EventRepository eventRepository;
-    private final EventImageService eventImageService;
+    private final ImageService imageService;
 
-    public OrganizerEventService(EventRepository eventRepository, EventImageService eventImageService) {
+    public OrganizerEventService(EventRepository eventRepository, ImageService imageService) {
         this.eventRepository = eventRepository;
-        this.eventImageService = eventImageService;
+        this.imageService = imageService;
     }
 
     public EventDTO createEvent(AppUser currentUser, CreateEventDTO newEventData) {
         Event event = new Event();
         event.setName(newEventData.getName());
-        event.setEventImage(eventImageService.createDefaultEventImage());
+        event.setEventImage(imageService.createDefaultImage(ImageService.DEFAULT_EVENT_IMAGE_NAME, ImageType.EVENT_IMAGE));
         event.setEventType(newEventData.getEventType());
         event.setDateTime(LocalDateTime.parse(newEventData.getDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         event.setLanguage(newEventData.getLanguage());
@@ -124,7 +125,7 @@ public class OrganizerEventService {
             target.setName(source.getName());
         }
         if (!source.getEventImage().isEmpty()) {
-            eventImageService.updateEventImage(target, source.getEventImage()).ifPresent(target::setEventImage);
+            imageService.updateImage(target.getEventImage().getId(), source.getEventImage());
         }
         if (source.getDateTime() != null && !source.getDateTime().equals(target.getDateTime().toString())) {
             target.setDateTime(LocalDateTime.parse(source.getDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));

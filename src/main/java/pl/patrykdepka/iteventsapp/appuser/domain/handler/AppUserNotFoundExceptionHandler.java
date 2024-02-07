@@ -15,7 +15,7 @@ public class AppUserNotFoundExceptionHandler extends AbstractExceptionHandler {
     private static final String MESSAGE_CODE = "exception.AppUserNotFoundException.message";
 
     public AppUserNotFoundExceptionHandler(MessageSource messageSource) {
-        super(HttpStatus.NOT_FOUND, MESSAGE_CODE, messageSource, AppUserNotFoundException.class);
+        super(HttpStatus.NOT_FOUND, messageSource, MESSAGE_CODE, AppUserNotFoundException.class);
     }
 
     @Override

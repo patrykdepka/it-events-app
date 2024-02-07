@@ -11,31 +11,31 @@ import pl.patrykdepka.iteventsapp.appuser.domain.exception.IncorrectCurrentPassw
 import pl.patrykdepka.iteventsapp.appuser.domain.mapper.AppUserProfileDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.domain.mapper.AppUserProfileEditDTOMapper;
 import pl.patrykdepka.iteventsapp.appuser.domain.mapper.AppUserTableDTOMapper;
-import pl.patrykdepka.iteventsapp.profileimage.model.ProfileImage;
-import pl.patrykdepka.iteventsapp.profileimage.service.ProfileImageService;
+import pl.patrykdepka.iteventsapp.image.domain.ImageService;
 import pl.patrykdepka.iteventsapp.security.AppUserDetailsService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
+
+import static pl.patrykdepka.iteventsapp.image.domain.ImageType.PROFILE_IMAGE;
 
 @Service
 public class AppUserService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ProfileImageService profileImageService;
+    private final ImageService imageService;
     private final AppUserDetailsService appUserDetailsService;
 
     public AppUserService(
             AppUserRepository appUserRepository,
             PasswordEncoder passwordEncoder,
-            ProfileImageService profileImageService,
+            ImageService imageService,
             AppUserDetailsService appUserDetailsService
     ) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
-        this.profileImageService = profileImageService;
+        this.imageService = imageService;
         this.appUserDetailsService = appUserDetailsService;
     }
 
@@ -46,7 +46,7 @@ public class AppUserService {
     @Transactional
     public void createUser(AppUserRegistrationDTO newUserData) {
         AppUser user = new AppUser();
-        user.setProfileImage(profileImageService.createDefaultProfileImage());
+        user.setProfileImage(imageService.createDefaultImage(ImageService.DEFAULT_PROFILE_IMAGE_NAME, PROFILE_IMAGE));
         user.setFirstName(newUserData.getFirstName());
         user.setLastName(newUserData.getLastName());
         user.setDateOfBirth(LocalDate.parse(newUserData.getDateOfBirth(), DateTimeFormatter.ISO_LOCAL_DATE));
@@ -110,11 +110,8 @@ public class AppUserService {
 
     private AppUser setUserProfileFields(AppUserProfileEditDTO source, AppUser target) {
         if (source.getProfileImage() != null && !source.getProfileImage().isEmpty()) {
-            Optional<ProfileImage> profileImage = profileImageService.updateProfileImage(target, source.getProfileImage());
-            if (profileImage.isPresent()) {
-                target.setProfileImage(profileImage.get());
-                appUserDetailsService.updateAppUserDetails(target);
-            }
+            imageService.updateImage(target.getProfileImage().getId(), source.getProfileImage());
+            appUserDetailsService.updateAppUserDetails(target);
         }
         if (source.getCity() != null && !source.getCity().equals(target.getCity())) {
             target.setCity(source.getCity());
