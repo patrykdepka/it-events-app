@@ -136,7 +136,10 @@ class AdminAppUserController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("accountUpdated", false);
         } else {
-            model.addAttribute("userAccount", adminAppUserService.updateUserAccount(id, userAccount));
+            model.addAttribute(
+                    "userAccount",
+                    adminAppUserService.updateUserAccount(currentUserFacade.getCurrentUser(), id, userAccount)
+            );
             model.addAttribute("accountUpdated", true);
         }
         return "admin/forms/app-user-account-edit-form";
@@ -159,7 +162,10 @@ class AdminAppUserController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("profileUpdated", false);
         } else {
-            model.addAttribute("userProfile", adminAppUserService.updateUserProfile(id, userProfile));
+            model.addAttribute(
+                    "userProfile",
+                    adminAppUserService.updateUserProfile(currentUserFacade.getCurrentUser(), id, userProfile)
+            );
             model.addAttribute("profileUpdated", true);
         }
         return "admin/forms/app-user-profile-edit-form";

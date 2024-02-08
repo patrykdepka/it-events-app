@@ -83,7 +83,7 @@ class OrganizerEventController {
         if (bindingResult.hasErrors()) {
             return "organizer/forms/event-edit-form";
         } else {
-            organizerEventService.updateEvent(id, eventEditData);
+            organizerEventService.updateEvent(currentUserFacade.getCurrentUser(), id, eventEditData);
             return "redirect:/events/" + id;
         }
     }

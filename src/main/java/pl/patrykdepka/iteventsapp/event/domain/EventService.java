@@ -1,6 +1,8 @@
 package pl.patrykdepka.iteventsapp.event.domain;
 
 import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,11 @@ import pl.patrykdepka.iteventsapp.event.domain.mapper.EventDTOMapper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
+    private final Logger logger = LoggerFactory.getLogger(EventService.class);
     private final EventRepository eventRepository;
 
     public EventService(EventRepository eventRepository) {
@@ -67,18 +71,30 @@ public class EventService {
 
     @Transactional
     public void addUserToEventParticipantsList(AppUser currentUser, Long id) {
-        eventRepository
-                .findById(id)
-                .map(event -> event.addParticipant(currentUser))
-                .orElseThrow(() -> new EventNotFoundException("Event with ID " + id + " not found"));
+        Optional<Event> eventOpt = eventRepository.findById(id);
+        if (eventOpt.isEmpty()) {
+            throw new EventNotFoundException("Event with ID " + id + " not found");
+        }
+
+        Event event = eventOpt.get();
+        if (!event.checkIfUserIsParticipant(currentUser)) {
+            event.addParticipant(currentUser);
+            logger.info("User [ID: " + currentUser.getId() + "] added to event [ID: " + event.getId() + "] participants list");
+        }
     }
 
     @Transactional
     public void removeUserFromEventParticipantsList(AppUser currentUser, Long id) {
-        eventRepository
-                .findById(id)
-                .map(event -> event.removeParticipant(currentUser))
-                .orElseThrow(() -> new EventNotFoundException("Event with ID " + id + " not found"));
+        Optional<Event> eventOpt = eventRepository.findById(id);
+        if (eventOpt.isEmpty()) {
+            throw new EventNotFoundException("Event with ID " + id + " not found");
+        }
+
+        Event event = eventOpt.get();
+        if (event.checkIfUserIsParticipant(currentUser)) {
+            event.removeParticipant(currentUser);
+            logger.info("User [ID: " + currentUser.getId() + "] removed from event [ID: " + event.getId() + "] participants list");
+        }
     }
 
     public Page<EventCardDTO> findUserEvents(AppUser user, Pageable page) {

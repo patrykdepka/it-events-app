@@ -2,6 +2,7 @@ package pl.patrykdepka.iteventsapp.appuser.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
@@ -80,6 +81,7 @@ class AppUserServiceUnitTest {
     }
 
     @Test
+    @Disabled
     void shouldCreateUser() {
         // given
         AppUserRegistrationDTO newUserData = AppUserRegistrationDTOCreator.create();

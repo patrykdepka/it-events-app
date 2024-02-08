@@ -129,6 +129,7 @@ class AdminAppUserServiceUnitTest {
     @Test
     void shouldReturnUpdatedUserAccount() {
         // given
+        AppUser admin = AppUserCreator.create(1L, "Admin", "Admin", ROLE_ADMIN);
         AppUser user = AppUserCreator.create(2L, "Jan", "Kowalski");
         when(appUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
         AdminAppUserAccountEditDTO newUserAccountData = AdminAppUserAccountEditDTO.builder()
@@ -137,7 +138,7 @@ class AdminAppUserServiceUnitTest {
                 .roles(List.of(ROLE_ORGANIZER))
                 .build();
         // when
-        AdminAppUserAccountEditDTO updatedUserAccount = adminAppUserService.updateUserAccount(user.getId(), newUserAccountData);
+        AdminAppUserAccountEditDTO updatedUserAccount = adminAppUserService.updateUserAccount(admin, user.getId(), newUserAccountData);
         // then
         assertThat(updatedUserAccount).isNotNull();
         assertThat(updatedUserAccount.isEnabled()).isFalse();
@@ -166,11 +167,12 @@ class AdminAppUserServiceUnitTest {
     @Test
     void shouldReturnUpdatedUserProfile() {
         // given
+        AppUser admin = AppUserCreator.create(1L, "Admin", "Admin", ROLE_ADMIN);
         AppUser user = AppUserCreator.create(2L, "Jan", "Kowalski");
         when(appUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
         AdminAppUserProfileEditDTO newUserProfileData = AdminAppUserProfileEditDTOCreator.create();
         // when
-        AdminAppUserProfileEditDTO updatedUserProfile = adminAppUserService.updateUserProfile(user.getId(), newUserProfileData);
+        AdminAppUserProfileEditDTO updatedUserProfile = adminAppUserService.updateUserProfile(admin, user.getId(), newUserProfileData);
         // then
         assertThat(updatedUserProfile).isNotNull();
         assertThat(updatedUserProfile.getProfileImage()).isNull();

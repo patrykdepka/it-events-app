@@ -198,7 +198,7 @@ class OrganizerEventServiceUnitTest {
         when(eventRepository.findById(event.getId())).thenReturn(Optional.of(event));
         EventEditDTO newEventData = EventEditDTOCreator.create(DATE_TIME);
         // when
-        organizerEventService.updateEvent(event.getId(), newEventData);
+        organizerEventService.updateEvent(organizer, event.getId(), newEventData);
         // then
         verify(eventRepository, times(1)).findById(eq(event.getId()));
     }
