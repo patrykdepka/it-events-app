@@ -1,5 +1,6 @@
 package pl.patrykdepka.iteventsapp.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,12 +15,9 @@ import javax.transaction.Transactional;
 import java.util.Base64;
 
 @Service
+@RequiredArgsConstructor
 public class AppUserDetailsServiceImpl implements AppUserDetailsService {
     private final AppUserRepository appUserRepository;
-
-    public AppUserDetailsServiceImpl(AppUserRepository appUserRepository) {
-        this.appUserRepository = appUserRepository;
-    }
 
     @Transactional
     @Override

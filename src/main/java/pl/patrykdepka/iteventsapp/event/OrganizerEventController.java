@@ -1,5 +1,6 @@
 package pl.patrykdepka.iteventsapp.event;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -18,14 +19,10 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 class OrganizerEventController {
     private final OrganizerEventService organizerEventService;
     private final CurrentUserFacade currentUserFacade;
-
-    OrganizerEventController(OrganizerEventService organizerEventService, CurrentUserFacade currentUserFacade) {
-        this.organizerEventService = organizerEventService;
-        this.currentUserFacade = currentUserFacade;
-    }
 
     @GetMapping("/organizer/create_event")
     String showCreateEventForm(Model model) {

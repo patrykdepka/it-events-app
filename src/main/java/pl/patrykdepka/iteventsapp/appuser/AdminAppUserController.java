@@ -1,5 +1,6 @@
 package pl.patrykdepka.iteventsapp.appuser;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,20 +19,11 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 @Controller
+@RequiredArgsConstructor
 class AdminAppUserController {
     private final AdminAppUserService adminAppUserService;
     private final CurrentUserFacade currentUserFacade;
     private final MessageSource messageSource;
-
-    public AdminAppUserController(
-            AdminAppUserService adminAppUserService,
-            CurrentUserFacade currentUserFacade,
-            MessageSource messageSource
-    ) {
-        this.adminAppUserService = adminAppUserService;
-        this.currentUserFacade = currentUserFacade;
-        this.messageSource = messageSource;
-    }
 
     @GetMapping("/admin/users")
     String getAllUsers(

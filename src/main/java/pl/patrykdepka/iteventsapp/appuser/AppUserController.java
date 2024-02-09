@@ -1,5 +1,6 @@
 package pl.patrykdepka.iteventsapp.appuser;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,20 +22,11 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 @Controller
+@RequiredArgsConstructor
 class AppUserController {
     private final AppUserService appUserService;
     private final MessageSource messageSource;
     private final CurrentUserFacade currentUserFacade;
-
-    public AppUserController(
-            AppUserService appUserService,
-            MessageSource messageSource,
-            CurrentUserFacade currentUserFacade
-    ) {
-        this.appUserService = appUserService;
-        this.messageSource = messageSource;
-        this.currentUserFacade = currentUserFacade;
-    }
 
     @GetMapping("/register")
     String showRegistrationForm(Model model) {

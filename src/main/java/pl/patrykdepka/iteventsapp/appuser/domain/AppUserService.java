@@ -1,5 +1,6 @@
 package pl.patrykdepka.iteventsapp.appuser.domain;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,24 +24,13 @@ import java.util.List;
 import static pl.patrykdepka.iteventsapp.image.domain.ImageType.PROFILE_IMAGE;
 
 @Service
+@RequiredArgsConstructor
 public class AppUserService {
     private final Logger logger = LoggerFactory.getLogger(AppUserService.class);
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final ImageService imageService;
     private final AppUserDetailsService appUserDetailsService;
-
-    public AppUserService(
-            AppUserRepository appUserRepository,
-            PasswordEncoder passwordEncoder,
-            ImageService imageService,
-            AppUserDetailsService appUserDetailsService
-    ) {
-        this.appUserRepository = appUserRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.imageService = imageService;
-        this.appUserDetailsService = appUserDetailsService;
-    }
 
     public boolean checkIfUserExists(String email) {
         return appUserRepository.existsByEmail(email.toLowerCase());

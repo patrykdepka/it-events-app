@@ -1,5 +1,6 @@
 package pl.patrykdepka.iteventsapp.event;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -18,14 +19,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 class EventController {
     private final EventService eventService;
     private final CurrentUserFacade currentUserFacade;
-
-    EventController(EventService eventService, CurrentUserFacade currentUserFacade) {
-        this.eventService = eventService;
-        this.currentUserFacade = currentUserFacade;
-    }
 
     @GetMapping("/")
     String showMainPage(Model model) {

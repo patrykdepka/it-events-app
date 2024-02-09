@@ -1,5 +1,6 @@
 package pl.patrykdepka.iteventsapp.image.domain;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,14 +12,11 @@ import java.io.InputStream;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
     public static final String DEFAULT_PROFILE_IMAGE_NAME = "default_profile_image.png";
     public static final String DEFAULT_EVENT_IMAGE_NAME = "default_profile_image.png";
     private final ImageRepository imageRepository;
-
-    public ImageService(ImageRepository imageRepository) {
-        this.imageRepository = imageRepository;
-    }
 
     public Image createDefaultImage(String filename, ImageType type) {
         ClassPathResource resource = new ClassPathResource("static/images/" + filename);
