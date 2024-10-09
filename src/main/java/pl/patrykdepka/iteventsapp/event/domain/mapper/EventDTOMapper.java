@@ -13,7 +13,7 @@ public class EventDTOMapper {
         return new EventDTO.EventDTOBuilder()
                 .id(event.getId())
                 .name(event.getName())
-                .imageType(event.getEventImage().getType())
+                .contentType(event.getEventImage().getContentType())
                 .imageData(Base64.getEncoder().encodeToString(event.getEventImage().getFileData()))
                 .eventType(event.getEventType().getDisplayName())
                 .date(event.getDateTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))

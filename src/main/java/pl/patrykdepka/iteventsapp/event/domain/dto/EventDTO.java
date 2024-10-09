@@ -7,7 +7,7 @@ import pl.patrykdepka.iteventsapp.image.domain.ImageType;
 public class EventDTO {
     Long id;
     String name;
-    ImageType imageType;
+    String contentType;
     String imageData;
     String eventType;
     String date;
@@ -27,7 +27,7 @@ public class EventDTO {
     public static class EventDTOBuilder {
         private Long id;
         private String name;
-        private ImageType imageType;
+        private String contentType;
         private String imageData;
         private String eventType;
         private String date;
@@ -54,8 +54,8 @@ public class EventDTO {
             return this;
         }
 
-        public EventDTOBuilder imageType(ImageType imageType) {
-            this.imageType = imageType;
+        public EventDTOBuilder contentType(String contentType) {
+            this.contentType = contentType;
             return this;
         }
 
@@ -138,7 +138,7 @@ public class EventDTO {
             return new EventDTO(
                     id,
                     name,
-                    imageType,
+                    contentType,
                     imageData,
                     eventType,
                     date,
